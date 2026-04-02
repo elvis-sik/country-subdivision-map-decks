@@ -21,30 +21,32 @@ If we cannot find a good deck for a country, we should mark it as a likely build
    - `not found`
    - `build later`
 
-## Queue
+## Active Scope
 
-### Do now
+We are building these ourselves now.
 
-- Mexico
-- Indonesia
-- South Africa
-- Poland
-- Turkey
-- Vietnam
-- Philippines
+### Keep
+
+- Mexico: 32 federative entities
+- South Africa: 9 provinces
+- Turkey: 7 geographical regions
+- Iran: 31 provinces
+
+### Dropped
+
 - Ukraine
-
-### Then maybe
-
+- Poland
+- Philippines
+- Vietnam
 - Egypt
-- Iran
 - Kazakhstan
+- Indonesia
 
 ## Initial Findings
 
 ### Mexico
 
-Status: `maybe usable`
+Status: `build ourselves`
 
 - [Mexican States](https://ankiweb.net/shared/info/79444390)
   - mirror: [anki-decks.com detail page](https://anki-decks.com/anki-decks/geography/mexican-states/)
@@ -55,19 +57,19 @@ Status: `maybe usable`
 
 ### Indonesia
 
-Status: `not found`
+Status: `dropped`
 
 - No solid subdivision-map deck found in the first pass through AnkiWeb mirrors and web search.
 
 ### South Africa
 
-Status: `not found`
+Status: `build ourselves`
 
 - No solid province-map deck found in the first pass through AnkiWeb mirrors and web search.
 
 ### Poland
 
-Status: `maybe usable`
+Status: `dropped`
 
 - [Wojewodztwa Polskie](https://ankiweb.net/shared/info/902241656)
   - mirror: [anki-decks.com detail page](https://anki-decks.com/anki-decks/geography/wojewodztwa-polskie/)
@@ -81,13 +83,13 @@ Status: `maybe usable`
 
 ### Turkey
 
-Status: `not found`
+Status: `build ourselves`
 
-- No solid province-map deck found in the first pass through AnkiWeb mirrors and web search.
+- We only care about the 7 geographical regions now, not the 81 provinces.
 
 ### Vietnam
 
-Status: `maybe usable`
+Status: `dropped`
 
 - [Provinces of Vietnam](https://ankiweb.net/shared/info/663361801)
   - mirror: [anki-decks.com detail page](https://anki-decks.com/anki-decks/geography/provinces-of-vietnam/)
@@ -95,13 +97,13 @@ Status: `maybe usable`
 
 ### Philippines
 
-Status: `not found`
+Status: `dropped`
 
 - No solid region/province map deck found in the first pass through AnkiWeb mirrors and web search.
 
 ### Ukraine
 
-Status: `maybe usable`
+Status: `dropped`
 
 - [Ukrainian Oblasts (Geography)](https://ankiweb.net/shared/info/1511688484)
   - mirror: [anki-decks.com detail page](https://anki-decks.com/anki-decks/geography/ukrainian-oblasts-geography/)
@@ -117,3 +119,28 @@ Status: `maybe usable`
 
 - AnkiWeb's current shared-deck search is heavily JavaScript-driven, so the most reliable first-pass results came from Anki deck mirror/index pages that expose direct AnkiWeb IDs.
 - The `not found` entries above mean "not found in the initial pass," not "definitely unavailable anywhere."
+
+## Map Sourcing
+
+Current goal: get SVG source maps into the repo for the four active countries.
+
+Status: `done`
+
+Desired assets per country:
+
+- one base country map with first-level borders
+- locator SVGs for each target subdivision where available
+
+Expected target counts:
+
+- Mexico: 1 base + 32 locators
+- South Africa: 1 base + 9 locators
+- Turkey: 1 base + 7 locators
+- Iran: 1 base + 31 locators
+
+Fetched counts:
+
+- Mexico: 1 base + 32 locators
+- South Africa: 1 base + 9 locators
+- Turkey: 1 base + 7 locators
+- Iran: 1 base + 31 locators
