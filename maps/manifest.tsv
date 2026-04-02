@@ -1,84 +1,84 @@
 country	kind	slug	label	source_title	local_path
-iran	base	iran-provinces	Iran provinces	iran-provinces.svg	maps/base/iran/iran-provinces.svg
-mexico	base	mexico-states	Mexico states	mexico-states.svg	maps/base/mexico/mexico-states.svg
-south-africa	base	south-africa-provinces	South Africa provinces	south-africa-provinces.svg	maps/base/south-africa/south-africa-provinces.svg
-turkey	base	turkey-regions	Turkey regions	Turkey-regions.svg	maps/base/turkey/turkey-regions.svg
-iran	locator	alborz	alborz	alborz.svg	maps/locators/iran/alborz.svg
-iran	locator	ardabil	ardabil	ardabil.svg	maps/locators/iran/ardabil.svg
-iran	locator	bushehr	bushehr	bushehr.svg	maps/locators/iran/bushehr.svg
-iran	locator	chahar-mahaal-and-bakhtiari	chahar-mahaal-and-bakhtiari	chahar-mahaal-and-bakhtiari.svg	maps/locators/iran/chahar-mahaal-and-bakhtiari.svg
-iran	locator	east-azerbaijan	east-azerbaijan	east-azerbaijan.svg	maps/locators/iran/east-azerbaijan.svg
-iran	locator	fars	fars	fars.svg	maps/locators/iran/fars.svg
-iran	locator	gilan	gilan	gilan.svg	maps/locators/iran/gilan.svg
-iran	locator	golestan	golestan	golestan.svg	maps/locators/iran/golestan.svg
-iran	locator	hamadan	hamadan	hamadan.svg	maps/locators/iran/hamadan.svg
-iran	locator	hormozgan	hormozgan	hormozgan.svg	maps/locators/iran/hormozgan.svg
-iran	locator	ilam	ilam	ilam.svg	maps/locators/iran/ilam.svg
-iran	locator	isfahan	isfahan	isfahan.svg	maps/locators/iran/isfahan.svg
-iran	locator	kerman	kerman	kerman.svg	maps/locators/iran/kerman.svg
-iran	locator	kermanshah	kermanshah	kermanshah.svg	maps/locators/iran/kermanshah.svg
-iran	locator	khuzestan	khuzestan	khuzestan.svg	maps/locators/iran/khuzestan.svg
-iran	locator	kohgiluyeh-and-boyer-ahmad	kohgiluyeh-and-boyer-ahmad	kohgiluyeh-and-boyer-ahmad.svg	maps/locators/iran/kohgiluyeh-and-boyer-ahmad.svg
-iran	locator	kurdistan	kurdistan	kurdistan.svg	maps/locators/iran/kurdistan.svg
-iran	locator	lorestan	lorestan	lorestan.svg	maps/locators/iran/lorestan.svg
-iran	locator	markazi	markazi	markazi.svg	maps/locators/iran/markazi.svg
-iran	locator	mazandaran	mazandaran	mazandaran.svg	maps/locators/iran/mazandaran.svg
-iran	locator	north-khorasan	north-khorasan	north-khorasan.svg	maps/locators/iran/north-khorasan.svg
-iran	locator	qazvin	qazvin	qazvin.svg	maps/locators/iran/qazvin.svg
-iran	locator	qom	qom	qom.svg	maps/locators/iran/qom.svg
-iran	locator	razavi-khorasan	razavi-khorasan	razavi-khorasan.svg	maps/locators/iran/razavi-khorasan.svg
-iran	locator	semnan	semnan	semnan.svg	maps/locators/iran/semnan.svg
-iran	locator	sistan-and-baluchistan	sistan-and-baluchistan	sistan-and-baluchistan.svg	maps/locators/iran/sistan-and-baluchistan.svg
-iran	locator	south-khorasan	south-khorasan	south-khorasan.svg	maps/locators/iran/south-khorasan.svg
-iran	locator	tehran	tehran	tehran.svg	maps/locators/iran/tehran.svg
-iran	locator	west-azerbaijan	west-azerbaijan	west-azerbaijan.svg	maps/locators/iran/west-azerbaijan.svg
-iran	locator	yazd	yazd	yazd.svg	maps/locators/iran/yazd.svg
-iran	locator	zanjan	zanjan	zanjan.svg	maps/locators/iran/zanjan.svg
-mexico	locator	aguascalientes	aguascalientes	aguascalientes.svg	maps/locators/mexico/aguascalientes.svg
-mexico	locator	baja-california-sur	baja-california-sur	baja-california-sur.svg	maps/locators/mexico/baja-california-sur.svg
-mexico	locator	baja-california	baja-california	baja-california.svg	maps/locators/mexico/baja-california.svg
-mexico	locator	campeche	campeche	campeche.svg	maps/locators/mexico/campeche.svg
-mexico	locator	chiapas	chiapas	chiapas.svg	maps/locators/mexico/chiapas.svg
-mexico	locator	chihuahua	chihuahua	chihuahua.svg	maps/locators/mexico/chihuahua.svg
-mexico	locator	coahuila	coahuila	coahuila.svg	maps/locators/mexico/coahuila.svg
-mexico	locator	colima	colima	colima.svg	maps/locators/mexico/colima.svg
-mexico	locator	durango	durango	durango.svg	maps/locators/mexico/durango.svg
-mexico	locator	guanajuato	guanajuato	guanajuato.svg	maps/locators/mexico/guanajuato.svg
-mexico	locator	guerrero	guerrero	guerrero.svg	maps/locators/mexico/guerrero.svg
-mexico	locator	hidalgo	hidalgo	hidalgo.svg	maps/locators/mexico/hidalgo.svg
-mexico	locator	jalisco	jalisco	jalisco.svg	maps/locators/mexico/jalisco.svg
-mexico	locator	mexico-city	mexico-city	mexico-city.svg	maps/locators/mexico/mexico-city.svg
-mexico	locator	michoacan	michoacan	michoacan.svg	maps/locators/mexico/michoacan.svg
-mexico	locator	morelos	morelos	morelos.svg	maps/locators/mexico/morelos.svg
-mexico	locator	nayarit	nayarit	nayarit.svg	maps/locators/mexico/nayarit.svg
-mexico	locator	nuevo-leon	nuevo-leon	nuevo-leon.svg	maps/locators/mexico/nuevo-leon.svg
-mexico	locator	oaxaca	oaxaca	oaxaca.svg	maps/locators/mexico/oaxaca.svg
-mexico	locator	puebla	puebla	puebla.svg	maps/locators/mexico/puebla.svg
-mexico	locator	queretaro	queretaro	queretaro.svg	maps/locators/mexico/queretaro.svg
-mexico	locator	quintana-roo	quintana-roo	quintana-roo.svg	maps/locators/mexico/quintana-roo.svg
-mexico	locator	san-luis-potosi	san-luis-potosi	san-luis-potosi.svg	maps/locators/mexico/san-luis-potosi.svg
-mexico	locator	sinaloa	sinaloa	sinaloa.svg	maps/locators/mexico/sinaloa.svg
-mexico	locator	sonora	sonora	sonora.svg	maps/locators/mexico/sonora.svg
-mexico	locator	state-of-mexico	state-of-mexico	state-of-mexico.svg	maps/locators/mexico/state-of-mexico.svg
-mexico	locator	tabasco	tabasco	tabasco.svg	maps/locators/mexico/tabasco.svg
-mexico	locator	tamaulipas	tamaulipas	tamaulipas.svg	maps/locators/mexico/tamaulipas.svg
-mexico	locator	tlaxcala	tlaxcala	tlaxcala.svg	maps/locators/mexico/tlaxcala.svg
-mexico	locator	veracruz	veracruz	veracruz.svg	maps/locators/mexico/veracruz.svg
-mexico	locator	yucatan	yucatan	yucatan.svg	maps/locators/mexico/yucatan.svg
-mexico	locator	zacatecas	zacatecas	zacatecas.svg	maps/locators/mexico/zacatecas.svg
-south-africa	locator	eastern-cape	eastern-cape	eastern-cape.svg	maps/locators/south-africa/eastern-cape.svg
-south-africa	locator	free-state	free-state	free-state.svg	maps/locators/south-africa/free-state.svg
-south-africa	locator	gauteng	gauteng	gauteng.svg	maps/locators/south-africa/gauteng.svg
-south-africa	locator	kwazulu-natal	kwazulu-natal	kwazulu-natal.svg	maps/locators/south-africa/kwazulu-natal.svg
-south-africa	locator	limpopo	limpopo	limpopo.svg	maps/locators/south-africa/limpopo.svg
-south-africa	locator	mpumalanga	mpumalanga	mpumalanga.svg	maps/locators/south-africa/mpumalanga.svg
-south-africa	locator	north-west	north-west	north-west.svg	maps/locators/south-africa/north-west.svg
-south-africa	locator	northern-cape	northern-cape	northern-cape.svg	maps/locators/south-africa/northern-cape.svg
-south-africa	locator	western-cape	western-cape	western-cape.svg	maps/locators/south-africa/western-cape.svg
-turkey	locator	aegean-region	aegean-region	aegean-region.svg	maps/locators/turkey/aegean-region.svg
-turkey	locator	black-sea-region	black-sea-region	black-sea-region.svg	maps/locators/turkey/black-sea-region.svg
-turkey	locator	central-anatolia-region	central-anatolia-region	central-anatolia-region.svg	maps/locators/turkey/central-anatolia-region.svg
-turkey	locator	eastern-anatolia-region	eastern-anatolia-region	eastern-anatolia-region.svg	maps/locators/turkey/eastern-anatolia-region.svg
-turkey	locator	marmara-region	marmara-region	marmara-region.svg	maps/locators/turkey/marmara-region.svg
-turkey	locator	mediterranean-region	mediterranean-region	mediterranean-region.svg	maps/locators/turkey/mediterranean-region.svg
-turkey	locator	southeastern-anatolia-region	southeastern-anatolia-region	southeastern-anatolia-region.svg	maps/locators/turkey/southeastern-anatolia-region.svg
+iran	base	iran-provinces	Iran provinces	File:Iran provinces.svg	maps/base/iran/iran-provinces.svg
+mexico	base	mexico-states	Mexico states	File:Mexico States blank map.svg	maps/base/mexico/mexico-states.svg
+south-africa	base	south-africa-provinces	South Africa provinces	File:SA provinces.svg	maps/base/south-africa/south-africa-provinces.svg
+turkey	base	turkey-regions	Turkey regions	File:Turkey-regions.svg	maps/base/turkey/turkey-regions.svg
+iran	locator	alborz	Alborz	File:Alborz in Iran.svg	maps/locators/iran/alborz.svg
+iran	locator	ardabil	Ardabil	File:Ardabil in Iran.svg	maps/locators/iran/ardabil.svg
+iran	locator	bushehr	Bushehr	File:Bushehr in Iran.svg	maps/locators/iran/bushehr.svg
+iran	locator	chahar-mahaal-and-bakhtiari	Chahar Mahaal and Bakhtiari	File:Chahar Mahaal and Bakhtiari in Iran.svg	maps/locators/iran/chahar-mahaal-and-bakhtiari.svg
+iran	locator	east-azerbaijan	East Azerbaijan	File:East Azerbaijan in Iran.svg	maps/locators/iran/east-azerbaijan.svg
+iran	locator	fars	Fars	File:Fars in Iran.svg	maps/locators/iran/fars.svg
+iran	locator	gilan	Gilan	File:Gilan in Iran.svg	maps/locators/iran/gilan.svg
+iran	locator	golestan	Golestan	File:Golestan in Iran.svg	maps/locators/iran/golestan.svg
+iran	locator	hamadan	Hamadan	File:Hamadan in Iran.svg	maps/locators/iran/hamadan.svg
+iran	locator	hormozgan	Hormozgan	File:Hormozgan in Iran.svg	maps/locators/iran/hormozgan.svg
+iran	locator	ilam	Ilam	File:Ilam in Iran.svg	maps/locators/iran/ilam.svg
+iran	locator	isfahan	Isfahan	File:Isfahan in Iran.svg	maps/locators/iran/isfahan.svg
+iran	locator	kerman	Kerman	File:Kerman in Iran.svg	maps/locators/iran/kerman.svg
+iran	locator	kermanshah	Kermanshah	File:Kermanshah in Iran.svg	maps/locators/iran/kermanshah.svg
+iran	locator	khuzestan	Khuzestan	File:Khuzestan in Iran.svg	maps/locators/iran/khuzestan.svg
+iran	locator	kohgiluyeh-and-boyer-ahmad	Kohgiluyeh and Boyer-Ahmad	File:Kohgiluyeh and Boyer-Ahmad in Iran.svg	maps/locators/iran/kohgiluyeh-and-boyer-ahmad.svg
+iran	locator	kurdistan	Kurdistan	File:Kurdistan in Iran.svg	maps/locators/iran/kurdistan.svg
+iran	locator	lorestan	Lorestan	File:Lorestan in Iran.svg	maps/locators/iran/lorestan.svg
+iran	locator	markazi	Markazi	File:Markazi in Iran.svg	maps/locators/iran/markazi.svg
+iran	locator	mazandaran	Mazandaran	File:Mazandaran in Iran.svg	maps/locators/iran/mazandaran.svg
+iran	locator	north-khorasan	North Khorasan	File:North Khorasan in Iran.svg	maps/locators/iran/north-khorasan.svg
+iran	locator	qazvin	Qazvin	File:Qazvin in Iran.svg	maps/locators/iran/qazvin.svg
+iran	locator	qom	Qom	File:Qom in Iran.svg	maps/locators/iran/qom.svg
+iran	locator	razavi-khorasan	Razavi Khorasan	File:Razavi Khorasan in Iran.svg	maps/locators/iran/razavi-khorasan.svg
+iran	locator	semnan	Semnan	File:Semnan in Iran.svg	maps/locators/iran/semnan.svg
+iran	locator	sistan-and-baluchistan	Sistan and Baluchistan	File:Sistan and Baluchistan in Iran.svg	maps/locators/iran/sistan-and-baluchistan.svg
+iran	locator	south-khorasan	South Khorasan	File:South Khorasan in Iran.svg	maps/locators/iran/south-khorasan.svg
+iran	locator	tehran	Tehran	File:Tehran in Iran.svg	maps/locators/iran/tehran.svg
+iran	locator	west-azerbaijan	West Azerbaijan	File:West Azerbaijan in Iran.svg	maps/locators/iran/west-azerbaijan.svg
+iran	locator	yazd	Yazd	File:Yazd in Iran.svg	maps/locators/iran/yazd.svg
+iran	locator	zanjan	Zanjan	File:Zanjan in Iran.svg	maps/locators/iran/zanjan.svg
+mexico	locator	aguascalientes	Aguascalientes	File:Aguascalientes in Mexico.svg	maps/locators/mexico/aguascalientes.svg
+mexico	locator	baja-california-sur	Baja California Sur	File:Baja California Sur in Mexico.svg	maps/locators/mexico/baja-california-sur.svg
+mexico	locator	baja-california	Baja California	File:Baja California in Mexico.svg	maps/locators/mexico/baja-california.svg
+mexico	locator	campeche	Campeche	File:Campeche in Mexico.svg	maps/locators/mexico/campeche.svg
+mexico	locator	chiapas	Chiapas	File:Chiapas in Mexico (location map scheme).svg	maps/locators/mexico/chiapas.svg
+mexico	locator	chihuahua	Chihuahua	File:Chihuahua in Mexico (location map scheme).svg	maps/locators/mexico/chihuahua.svg
+mexico	locator	coahuila	Coahuila	File:Coahuila in Mexico (location map scheme).svg	maps/locators/mexico/coahuila.svg
+mexico	locator	colima	Colima	File:Colima in Mexico (location map scheme).svg	maps/locators/mexico/colima.svg
+mexico	locator	durango	Durango	File:Durango in Mexico (location map scheme).svg	maps/locators/mexico/durango.svg
+mexico	locator	guanajuato	Guanajuato	File:Guanajuato in Mexico (location map scheme).svg	maps/locators/mexico/guanajuato.svg
+mexico	locator	guerrero	Guerrero	File:Guerrero in Mexico (location map scheme).svg	maps/locators/mexico/guerrero.svg
+mexico	locator	hidalgo	Hidalgo	File:Hidalgo in Mexico (location map scheme).svg	maps/locators/mexico/hidalgo.svg
+mexico	locator	jalisco	Jalisco	File:Jalisco in Mexico (location map scheme).svg	maps/locators/mexico/jalisco.svg
+mexico	locator	mexico-city	Mexico City	File:Mexico (city) in Mexico.svg	maps/locators/mexico/mexico-city.svg
+mexico	locator	michoacan	Michoacan	File:Michoacan in Mexico (location map scheme).svg	maps/locators/mexico/michoacan.svg
+mexico	locator	morelos	Morelos	File:Morelos in Mexico (location map scheme).svg	maps/locators/mexico/morelos.svg
+mexico	locator	nayarit	Nayarit	File:Nayarit in Mexico (location map scheme).svg	maps/locators/mexico/nayarit.svg
+mexico	locator	nuevo-leon	Nuevo Leon	File:Nuevo Leon in Mexico (location map scheme).svg	maps/locators/mexico/nuevo-leon.svg
+mexico	locator	oaxaca	Oaxaca	File:Oaxaca in Mexico.svg	maps/locators/mexico/oaxaca.svg
+mexico	locator	puebla	Puebla	File:Puebla in Mexico (location map scheme).svg	maps/locators/mexico/puebla.svg
+mexico	locator	queretaro	Queretaro	File:Queretaro in Mexico (location map scheme).svg	maps/locators/mexico/queretaro.svg
+mexico	locator	quintana-roo	Quintana Roo	File:Quintana Roo in Mexico (location map scheme).svg	maps/locators/mexico/quintana-roo.svg
+mexico	locator	san-luis-potosi	San Luis Potosi	File:San Luis Potosi in Mexico (location map scheme).svg	maps/locators/mexico/san-luis-potosi.svg
+mexico	locator	sinaloa	Sinaloa	File:Sinaloa in Mexico (location map scheme).svg	maps/locators/mexico/sinaloa.svg
+mexico	locator	sonora	Sonora	File:Sonora in Mexico (location map scheme).svg	maps/locators/mexico/sonora.svg
+mexico	locator	state-of-mexico	State of Mexico	File:Mexico (state) in Mexico.svg	maps/locators/mexico/state-of-mexico.svg
+mexico	locator	tabasco	Tabasco	File:Tabasco in Mexico (location map scheme).svg	maps/locators/mexico/tabasco.svg
+mexico	locator	tamaulipas	Tamaulipas	File:Tamaulipas in Mexico (location map scheme).svg	maps/locators/mexico/tamaulipas.svg
+mexico	locator	tlaxcala	Tlaxcala	File:Tlaxcala in Mexico (location map scheme).svg	maps/locators/mexico/tlaxcala.svg
+mexico	locator	veracruz	Veracruz	File:Veracruz in Mexico (location map scheme).svg	maps/locators/mexico/veracruz.svg
+mexico	locator	yucatan	Yucatan	File:Yucatan in Mexico (location map scheme).svg	maps/locators/mexico/yucatan.svg
+mexico	locator	zacatecas	Zacatecas	File:Zacatecas in Mexico (location map scheme).svg	maps/locators/mexico/zacatecas.svg
+south-africa	locator	eastern-cape	Eastern Cape	File:Eastern Cape in South Africa.svg	maps/locators/south-africa/eastern-cape.svg
+south-africa	locator	free-state	Free State	File:Free State in South Africa.svg	maps/locators/south-africa/free-state.svg
+south-africa	locator	gauteng	Gauteng	File:Gauteng in South Africa.svg	maps/locators/south-africa/gauteng.svg
+south-africa	locator	kwazulu-natal	KwaZulu-Natal	File:KwaZulu-Natal in South Africa.svg	maps/locators/south-africa/kwazulu-natal.svg
+south-africa	locator	limpopo	Limpopo	File:Limpopo in South Africa.svg	maps/locators/south-africa/limpopo.svg
+south-africa	locator	mpumalanga	Mpumalanga	File:Mpumalanga in South Africa.svg	maps/locators/south-africa/mpumalanga.svg
+south-africa	locator	north-west	North West	File:North West in South Africa.svg	maps/locators/south-africa/north-west.svg
+south-africa	locator	northern-cape	Northern Cape	File:Northern Cape in South Africa.svg	maps/locators/south-africa/northern-cape.svg
+south-africa	locator	western-cape	Western Cape	File:Western Cape in South Africa.svg	maps/locators/south-africa/western-cape.svg
+turkey	locator	aegean-region	Aegean Region	File:Aegean Region in Turkey.svg	maps/locators/turkey/aegean-region.svg
+turkey	locator	black-sea-region	Black Sea Region	File:Black Sea Region in Turkey.svg	maps/locators/turkey/black-sea-region.svg
+turkey	locator	central-anatolia-region	Central Anatolia Region	File:Central Anatolia Region in Turkey.svg	maps/locators/turkey/central-anatolia-region.svg
+turkey	locator	eastern-anatolia-region	Eastern Anatolia Region	File:Eastern Anatolia Region in Turkey.svg	maps/locators/turkey/eastern-anatolia-region.svg
+turkey	locator	marmara-region	Marmara Region	File:Marmara Region in Turkey.svg	maps/locators/turkey/marmara-region.svg
+turkey	locator	mediterranean-region	Mediterranean Region	File:Mediterranean Region in Turkey.svg	maps/locators/turkey/mediterranean-region.svg
+turkey	locator	southeastern-anatolia-region	Southeastern Anatolia Region	File:Southeastern Anatolia Region in Turkey.svg	maps/locators/turkey/southeastern-anatolia-region.svg
