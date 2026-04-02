@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import csv
 import html
+import re
 from pathlib import Path
 
 try:
@@ -18,12 +19,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_CSV = REPO_ROOT / "data" / "subdivisions" / "south-africa.csv"
 CSS_PATH = REPO_ROOT / "templates" / "south_africa.css"
 OUTPUT_APKG = REPO_ROOT / "out" / "south-africa-provinces.apkg"
+GENERATED_MEDIA_DIR = REPO_ROOT / "out" / "generated-media" / "south-africa"
 
 MODEL_ID = 1_893_420_501
 DECK_ID = 1_893_420_502
 
 FIELD_NAMES = [
-    "CountryName",
     "SubdivisionType",
     "SubdivisionSlug",
     "SubdivisionName",
@@ -48,6 +49,54 @@ def read_rows() -> list[dict[str, str]]:
 
 def basename(path_value: str) -> str:
     return Path(path_value).name
+
+
+def sanitize_svg(svg_path: Path, output_path: Path) -> None:
+    text = svg_path.read_text(encoding="utf-8")
+    entity_map = {
+        "&ns_extend;": "http://ns.adobe.com/Extensibility/1.0/",
+        "&ns_ai;": "http://ns.adobe.com/AdobeIllustrator/10.0/",
+        "&ns_graphs;": "http://ns.adobe.com/Graphs/1.0/",
+        "&ns_vars;": "http://ns.adobe.com/Variables/1.0/",
+        "&ns_imrep;": "http://ns.adobe.com/ImageReplacement/1.0/",
+        "&ns_sfw;": "http://ns.adobe.com/SaveForWeb/1.0/",
+        "&ns_custom;": "http://ns.adobe.com/GenericCustomNamespace/1.0/",
+        "&ns_adobe_xpath;": "http://ns.adobe.com/XPath/1.0/",
+    }
+    for entity, value in entity_map.items():
+        text = text.replace(entity, value)
+
+    text = re.sub(r'<!DOCTYPE[\s\S]*?\]\s*>', "", text, count=1, flags=re.IGNORECASE)
+    text = re.sub(r'<!DOCTYPE[^>]*>', "", text, count=1, flags=re.IGNORECASE)
+    text = re.sub(r"<metadata\b[\s\S]*?</metadata>", "", text, flags=re.IGNORECASE)
+    text = re.sub(
+        r"<switch>\s*<foreignObject\b[\s\S]*?</foreignObject>\s*(<g\b[\s\S]*?</g>)\s*</switch>",
+        r"\1",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(r"\s+i:extraneous=\"[^\"]*\"", "", text)
+    text = re.sub(r"\s+enable-background=\"[^\"]*\"", "", text)
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(text, encoding="utf-8")
+
+
+def prepare_media(rows: list[dict[str, str]]) -> list[str]:
+    GENERATED_MEDIA_DIR.mkdir(parents=True, exist_ok=True)
+    prepared: dict[str, str] = {}
+
+    for row in rows:
+        for path_key in ("locator_svg_path", "base_svg_path"):
+            source_path = REPO_ROOT / row[path_key]
+            output_path = GENERATED_MEDIA_DIR / source_path.name
+            if source_path.suffix.lower() == ".svg":
+                sanitize_svg(source_path, output_path)
+            else:
+                output_path.write_bytes(source_path.read_bytes())
+            prepared[source_path.name] = str(output_path)
+
+    return [prepared[name] for name in sorted(prepared)]
 
 
 def split_pipe(value: str) -> list[str]:
@@ -192,6 +241,7 @@ def south_africa_model() -> genanki.Model:
         "Country Subdivisions - South Africa Provinces",
         fields=[{"name": name} for name in FIELD_NAMES],
         css=CSS_PATH.read_text(encoding="utf-8"),
+        sort_field_index=2,
         templates=[
             {
                 "name": "Locator Map -> Province",
@@ -292,7 +342,6 @@ def south_africa_model() -> genanki.Model:
 
 def csv_row_to_note_fields(row: dict[str, str]) -> list[str]:
     return [
-        row["country_name"],
         row["subdivision_type"],
         row["subdivision_slug"],
         row["subdivision_name"],
@@ -310,19 +359,11 @@ def csv_row_to_note_fields(row: dict[str, str]) -> list[str]:
     ]
 
 
-def media_files(rows: list[dict[str, str]]) -> list[str]:
-    files = {
-        str(REPO_ROOT / row["locator_svg_path"])
-        for row in rows
-    }
-    files.update(str(REPO_ROOT / row["base_svg_path"]) for row in rows)
-    return sorted(files)
-
-
 def build_deck() -> None:
     rows = read_rows()
     model = south_africa_model()
     deck = genanki.Deck(DECK_ID, "Geography::South Africa Provinces")
+    media_files = prepare_media(rows)
 
     for row in rows:
         note = genanki.Note(
@@ -334,7 +375,7 @@ def build_deck() -> None:
 
     OUTPUT_APKG.parent.mkdir(parents=True, exist_ok=True)
     package = genanki.Package(deck)
-    package.media_files = media_files(rows)
+    package.media_files = media_files
     package.write_to_file(str(OUTPUT_APKG))
 
 
