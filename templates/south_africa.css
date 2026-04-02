@@ -1,0 +1,219 @@
+:root{
+  --sand:#f6efe2;
+  --paper:#fffaf0;
+  --ink:#171614;
+  --muted:#5c564d;
+  --green:#0b5d3b;
+  --green-soft:#d5e8de;
+  --gold:#c89a28;
+  --gold-soft:#f5e7bb;
+  --red:#a9342a;
+  --red-soft:#f1d6d0;
+  --shadow:rgba(24,20,14,0.16);
+  --rule:rgba(23,22,20,0.12);
+}
+
+.card{
+  font-family:"Palatino Linotype","Book Antiqua","Iowan Old Style",serif;
+  font-size:20px;
+  line-height:1.42;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(11,93,59,0.12), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(169,52,42,0.08), transparent 24%),
+    linear-gradient(180deg, var(--paper) 0%, var(--sand) 100%);
+  padding:20px 16px 28px;
+}
+
+.shell{
+  max-width:860px;
+  margin:0 auto;
+}
+
+.plate{
+  background:linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.68));
+  border:1px solid var(--rule);
+  border-radius:28px;
+  box-shadow:0 18px 42px var(--shadow);
+  overflow:hidden;
+}
+
+.banner{
+  padding:18px 22px 14px;
+  background:
+    linear-gradient(90deg, #111 0 10%, var(--gold) 10% 18%, var(--green) 18% 62%, var(--red) 62% 100%);
+  color:#fffdf8;
+}
+
+.deck-label{
+  font-family:"Gill Sans","Avenir Next","Trebuchet MS",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:0.18em;
+  font-size:11px;
+  opacity:0.92;
+}
+
+.card-kind{
+  margin-top:8px;
+  font-size:30px;
+  line-height:1.05;
+}
+
+.body{
+  padding:20px 22px 24px;
+}
+
+.prompt-label,
+.section-label,
+.wiki-label{
+  font-family:"Gill Sans","Avenir Next","Trebuchet MS",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:0.14em;
+  font-size:11px;
+}
+
+.prompt-label{
+  color:var(--green);
+}
+
+.question{
+  font-size:32px;
+  line-height:1.08;
+  margin:8px 0 0;
+  color:var(--green);
+}
+
+.map-frame{
+  margin-top:16px;
+  border-radius:24px;
+  border:1px solid rgba(11,93,59,0.14);
+  background:
+    linear-gradient(180deg, rgba(11,93,59,0.05), rgba(255,255,255,0.88));
+  padding:14px;
+}
+
+.map-frame.base{
+  background:
+    linear-gradient(180deg, rgba(200,154,40,0.10), rgba(255,255,255,0.92));
+}
+
+.map-image{
+  display:block;
+  width:100%;
+  max-height:420px;
+  object-fit:contain;
+}
+
+.answer{
+  margin-top:18px;
+  border-radius:22px;
+  padding:18px 18px 16px;
+  background:
+    linear-gradient(180deg, rgba(11,93,59,0.08), rgba(255,255,255,0.78));
+  border:1px solid rgba(11,93,59,0.14);
+}
+
+.answer-main{
+  font-size:40px;
+  line-height:1.02;
+  margin:8px 0 0;
+  color:var(--green);
+}
+
+.answer-sub{
+  margin-top:10px;
+  font-size:17px;
+  color:var(--muted);
+}
+
+.meta-grid{
+  display:grid;
+  gap:14px;
+  margin-top:18px;
+}
+
+@media (min-width:760px){
+  .meta-grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+.panel{
+  border:1px solid var(--rule);
+  border-radius:18px;
+  padding:14px 15px;
+  background:rgba(255,255,255,0.74);
+}
+
+.panel.connections{
+  margin-top:18px;
+}
+
+.panel-title{
+  font-family:"Gill Sans","Avenir Next","Trebuchet MS",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  font-size:11px;
+  color:var(--red);
+}
+
+.panel-value{
+  margin-top:8px;
+  font-size:17px;
+}
+
+.chip-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:10px;
+}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:7px 12px;
+  background:linear-gradient(180deg, var(--gold-soft), #fff6d6);
+  border:1px solid rgba(200,154,40,0.18);
+  font-family:"Gill Sans","Avenir Next","Trebuchet MS",sans-serif;
+  font-size:14px;
+}
+
+.wiki-box{
+  margin-top:18px;
+  border-radius:18px;
+  border:1px solid rgba(11,93,59,0.14);
+  overflow:hidden;
+  background:#fff;
+}
+
+.wiki-header{
+  padding:10px 14px;
+  background:linear-gradient(180deg, rgba(11,93,59,0.09), rgba(255,255,255,0.82));
+  color:var(--green);
+}
+
+.wiki-frame{
+  display:block;
+  width:100%;
+  height:220px;
+  border:0;
+  background:#fff;
+}
+
+.wiki-link{
+  padding:10px 14px 14px;
+  font-family:"Gill Sans","Avenir Next","Trebuchet MS",sans-serif;
+  font-size:14px;
+}
+
+.wiki-link a{
+  color:var(--green);
+}
+
+.foot{
+  margin-top:16px;
+  color:var(--muted);
+  font-size:14px;
+}

@@ -226,6 +226,8 @@ FIELDNAMES = [
     "subdivision_type",
     "subdivision_slug",
     "subdivision_name",
+    "native_name",
+    "aliases",
     "subdivision_wikidata_id",
     "subdivision_wikipedia_url",
     "capital_name",
@@ -309,8 +311,9 @@ def wbgetentities(ids: list[str]) -> dict[str, dict]:
                 "action": "wbgetentities",
                 "format": "json",
                 "ids": "|".join(batch),
-                "languages": "en",
-                "props": "labels|sitelinks|claims",
+                "languages": "en|fa|tr",
+                "languagefallback": "0",
+                "props": "labels|aliases|sitelinks|claims",
             }
         )
         entities.update(response["entities"])
@@ -331,6 +334,18 @@ def load_map_manifest() -> dict:
 
 def extract_label(entity: dict) -> str:
     return entity.get("labels", {}).get("en", {}).get("value", "")
+
+
+def extract_label_in_language(entity: dict, language: str) -> str:
+    return entity.get("labels", {}).get(language, {}).get("value", "")
+
+
+def extract_aliases(entity: dict, language: str) -> list[str]:
+    return [
+        alias.get("value", "").strip()
+        for alias in entity.get("aliases", {}).get(language, [])
+        if alias.get("value", "").strip()
+    ]
 
 
 def extract_enwiki_url(entity: dict) -> str:
@@ -398,6 +413,13 @@ def init_row(country_slug: str, config: dict, manifest: dict, entity: dict) -> d
         )
 
     capital_qid = first_claim_entity_id(entity, "P36")
+    native_name = ""
+    aliases = ""
+    if country_slug == "iran":
+        native_name = extract_label_in_language(entity, "fa")
+        aliases = " | ".join(sorted(dict.fromkeys(extract_aliases(entity, "en"))))
+    elif country_slug == "turkey":
+        native_name = extract_label_in_language(entity, "tr")
 
     return {
         "country_slug": country_slug,
@@ -405,6 +427,8 @@ def init_row(country_slug: str, config: dict, manifest: dict, entity: dict) -> d
         "subdivision_type": config["subdivision_type"],
         "subdivision_slug": subdivision_slug,
         "subdivision_name": label,
+        "native_name": native_name,
+        "aliases": aliases,
         "subdivision_wikidata_id": entity["id"],
         "subdivision_wikipedia_url": extract_enwiki_url(entity),
         "capital_name": "",

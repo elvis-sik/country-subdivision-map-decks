@@ -153,3 +153,59 @@ Status: `done`
 - machine-readable map manifest written to `maps/manifest.tsv`
 - SVG inspection report written to `maps/INSPECTION.md`
 - all 4 base SVGs and all 79 locator SVGs appear label-free by automated tag inspection
+
+## Data Model
+
+Status: `in progress`
+
+Current canonical CSV fields include:
+
+- subdivision name
+- capital
+- subdivision Wikipedia URL
+- capital Wikipedia URL
+- neighboring subdivisions
+- neighboring countries
+- bordering waters
+- combined connections summary
+- locator SVG path
+- base SVG path
+
+Country-specific enrichment now included:
+
+- Iran: `native_name` in Persian and `aliases` for English transliteration variants
+- Turkey: `native_name` in Turkish
+
+Notes:
+
+- water-border fields are manually curated where Wikidata was incomplete or noisy
+- Turkey's seven geographical regions intentionally leave capital fields blank
+
+## Card Model
+
+Status: `chosen`
+
+The working card set for country subdivision decks is:
+
+1. locator map -> subdivision
+2. subdivision -> locator map
+3. subdivision -> capital
+4. capital -> subdivision
+5. subdivision -> connections
+
+Modeling choice:
+
+- use country-specific note types when helpful, so each deck can have its own styling and card ergonomics
+
+## First Deck Pass
+
+Status: `in progress`
+
+South Africa is the first full deck scaffold.
+
+Current implementation:
+
+- reproducible APKG builder at `scripts/build_south_africa_apkg.py`
+- deck package output at `out/south-africa-provinces.apkg`
+- dedicated deck styling at `templates/south_africa.css`
+- card backs include a small Wikipedia iframe plus a direct article link fallback
