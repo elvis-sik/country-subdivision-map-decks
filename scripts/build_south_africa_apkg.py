@@ -283,8 +283,7 @@ def south_africa_model() -> genanki.Model:
                     "Province to Capital",
                     """
 <div class="question">{{SubdivisionName}}</div>
-"""
-                    + "{{Card_LocatorMap_HTML}}",
+""",
                 ),
                 "afmt": back_shell(
                     "Province to Capital",
