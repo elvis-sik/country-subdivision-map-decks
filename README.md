@@ -36,3 +36,23 @@ Build the South Africa package:
 Output:
 
 - `out/south-africa-provinces.apkg`
+
+## Lessons
+
+Project notes from the South Africa pass live in:
+
+- `LESSONS.md`
+
+## Next deck build
+
+Mexico is the next full deck target.
+
+Build the Mexico package:
+
+```sh
+.venv/bin/python scripts/build_mexico_apkg.py
+```
+
+Output:
+
+- `out/mexico-federative-entities.apkg`

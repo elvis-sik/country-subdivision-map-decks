@@ -117,6 +117,9 @@ MANUAL_ROW_OVERRIDES = {
             "borders_waters": "Pacific Ocean",
         },
         "mexico-city": {
+            "capital_name": "Mexico City",
+            "capital_wikidata_id": "Q1489",
+            "capital_wikipedia_url": "https://en.wikipedia.org/wiki/Mexico_City",
             "borders_waters": "",
         },
         "michoacan": {

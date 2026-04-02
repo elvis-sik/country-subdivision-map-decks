@@ -209,3 +209,32 @@ Current implementation:
 - deck package output at `out/south-africa-provinces.apkg`
 - dedicated deck styling at `templates/south_africa.css`
 - card backs include a small Wikipedia iframe plus a direct article link fallback
+
+## Lessons Learned
+
+Status: `documented`
+
+Written to:
+
+- `LESSONS.md`
+
+Key points captured there:
+
+- use HTML map fields, not bare media filenames, for Anki image references
+- version note types whenever field schema changes
+- sanitize packaged SVGs before including them in the deck
+- keep `SubdivisionName` as the first and sort field
+- optimize card backs to avoid unnecessary scrolling
+- present connections as structured blocks, not long prose
+
+## Next Deck Pass
+
+Status: `in progress`
+
+Mexico is the next full scaffold after South Africa.
+
+Current implementation:
+
+- reproducible APKG builder at `scripts/build_mexico_apkg.py`
+- deck package output at `out/mexico-federative-entities.apkg`
+- dedicated deck styling at `templates/mexico.css`
