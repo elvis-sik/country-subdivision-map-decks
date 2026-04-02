@@ -4,7 +4,6 @@ from __future__ import annotations
 import csv
 import html
 import re
-import subprocess
 from pathlib import Path
 
 try:
@@ -22,7 +21,7 @@ CSS_PATH = REPO_ROOT / "templates" / "south_africa.css"
 OUTPUT_APKG = REPO_ROOT / "out" / "south-africa-provinces.apkg"
 GENERATED_MEDIA_DIR = REPO_ROOT / "out" / "generated-media" / "south-africa"
 
-MODEL_ID = 1_893_420_503
+MODEL_ID = 1_893_420_504
 DECK_ID = 1_893_420_502
 
 FIELD_NAMES = [
@@ -38,8 +37,8 @@ FIELD_NAMES = [
     "BordersCountries",
     "BordersWaters",
     "Connections",
-    "LocatorFilename",
-    "BaseFilename",
+    "Card_LocatorMap_HTML",
+    "Card_BlankMap_HTML",
 ]
 
 
@@ -50,10 +49,6 @@ def read_rows() -> list[dict[str, str]]:
 
 def basename(path_value: str) -> str:
     return Path(path_value).name
-
-
-def png_name(path_value: str) -> str:
-    return f"{Path(path_value).stem}.png"
 
 
 def sanitize_svg(svg_path: Path, output_path: Path) -> None:
@@ -87,21 +82,6 @@ def sanitize_svg(svg_path: Path, output_path: Path) -> None:
     output_path.write_text(text, encoding="utf-8")
 
 
-def render_png(svg_path: Path, png_path: Path) -> None:
-    subprocess.run(
-        [
-            "/opt/homebrew/bin/rsvg-convert",
-            "--keep-aspect-ratio",
-            "--width",
-            "1600",
-            "--output",
-            str(png_path),
-            str(svg_path),
-        ],
-        check=True,
-    )
-
-
 def prepare_media(rows: list[dict[str, str]]) -> list[str]:
     GENERATED_MEDIA_DIR.mkdir(parents=True, exist_ok=True)
     for existing in GENERATED_MEDIA_DIR.iterdir():
@@ -112,12 +92,9 @@ def prepare_media(rows: list[dict[str, str]]) -> list[str]:
     for row in rows:
         for path_key in ("locator_svg_path", "base_svg_path"):
             source_path = REPO_ROOT / row[path_key]
-            sanitized_svg_path = GENERATED_MEDIA_DIR / source_path.name
-            output_path = GENERATED_MEDIA_DIR / png_name(source_path.name)
+            output_path = GENERATED_MEDIA_DIR / source_path.name
             if source_path.suffix.lower() == ".svg":
-                sanitize_svg(source_path, sanitized_svg_path)
-                render_png(sanitized_svg_path, output_path)
-                sanitized_svg_path.unlink()
+                sanitize_svg(source_path, output_path)
             else:
                 output_path.write_bytes(source_path.read_bytes())
             prepared[output_path.name] = str(output_path)
@@ -139,7 +116,7 @@ def map_html(field_name: str, alt_text: str, extra_class: str = "") -> str:
     class_suffix = f" {extra_class}" if extra_class else ""
     return (
         f'<div class="map-frame{class_suffix}">'
-        f'<img class="map-image" src="{{{{{field_name}}}}}" alt="{html.escape(alt_text)}">'
+        f'<img class="map-image" src="{html.escape(field_name)}" alt="{html.escape(alt_text)}">'
         "</div>"
     )
 
@@ -264,7 +241,7 @@ def connections_panels() -> str:
 def south_africa_model() -> genanki.Model:
     return genanki.Model(
         MODEL_ID,
-        "Country Subdivisions - South Africa Provinces v2",
+        "Country Subdivisions - South Africa Provinces v3",
         fields=[{"name": name} for name in FIELD_NAMES],
         css=CSS_PATH.read_text(encoding="utf-8"),
         sort_field_index=0,
@@ -273,11 +250,11 @@ def south_africa_model() -> genanki.Model:
                 "name": "Locator Map -> Province",
                 "qfmt": front_shell(
                     "Locator to Province",
-                    map_html("LocatorFilename", "Locator map of a South African province"),
+                    "{{Card_LocatorMap_HTML}}",
                 ),
                 "afmt": back_shell(
                     "Locator to Province",
-                    map_html("LocatorFilename", "Locator map of a South African province"),
+                    "{{Card_LocatorMap_HTML}}",
                     province_answer(),
                     province_meta() + wiki_box("SubdivisionWikipediaUrl", "Province article"),
                 ),
@@ -289,15 +266,15 @@ def south_africa_model() -> genanki.Model:
                     """
 <div class="question">{{SubdivisionName}}</div>
 """
-                    + map_html("BaseFilename", "Blank map of South African provinces", "base"),
+                    + "{{Card_BlankMap_HTML}}",
                 ),
                 "afmt": back_shell(
                     "Province to Locator",
                     """
 <div class="question">{{SubdivisionName}}</div>
 """
-                    + map_html("BaseFilename", "Blank map of South African provinces", "base"),
-                    map_html("LocatorFilename", "Locator map of {{SubdivisionName}}"),
+                    + "{{Card_BlankMap_HTML}}",
+                    "{{Card_LocatorMap_HTML}}",
                     province_meta() + wiki_box("SubdivisionWikipediaUrl", "Province article"),
                 ),
             },
@@ -308,14 +285,14 @@ def south_africa_model() -> genanki.Model:
                     """
 <div class="question">{{SubdivisionName}}</div>
 """
-                    + map_html("LocatorFilename", "Locator map of {{SubdivisionName}}"),
+                    + "{{Card_LocatorMap_HTML}}",
                 ),
                 "afmt": back_shell(
                     "Province to Capital",
                     """
 <div class="question">{{SubdivisionName}}</div>
 """
-                    + map_html("LocatorFilename", "Locator map of {{SubdivisionName}}"),
+                    + "{{Card_LocatorMap_HTML}}",
                     capital_answer(),
                     wiki_box("CapitalWikipediaUrl", "Capital article"),
                 ),
@@ -333,7 +310,7 @@ def south_africa_model() -> genanki.Model:
                     """
 <div class="question">{{CapitalName}}</div>
 """,
-                    capital_to_province_answer() + map_html("LocatorFilename", "Locator map of {{SubdivisionName}}"),
+                    capital_to_province_answer() + "{{Card_LocatorMap_HTML}}",
                     wiki_box("CapitalWikipediaUrl", "Capital article"),
                 ),
             },
@@ -344,14 +321,14 @@ def south_africa_model() -> genanki.Model:
                     """
 <div class="question">{{SubdivisionName}}</div>
 """
-                    + map_html("LocatorFilename", "Locator map of {{SubdivisionName}}"),
+                    + "{{Card_LocatorMap_HTML}}",
                 ),
                 "afmt": back_shell(
                     "Province to Connections",
                     """
 <div class="question">{{SubdivisionName}}</div>
 """
-                    + map_html("LocatorFilename", "Locator map of {{SubdivisionName}}"),
+                    + "{{Card_LocatorMap_HTML}}",
                     """
 <div class="answer">
   <div class="section-label">Connections</div>
@@ -380,8 +357,8 @@ def csv_row_to_note_fields(row: dict[str, str]) -> list[str]:
         join_chips(split_pipe(row["borders_countries"])),
         join_chips(split_pipe(row["borders_waters"])),
         row["connections"],
-        png_name(row["locator_svg_path"]),
-        png_name(row["base_svg_path"]),
+        map_html(basename(row["locator_svg_path"]), f"Locator map of {row['subdivision_name']}"),
+        map_html(basename(row["base_svg_path"]), "Blank map of South African provinces", "base"),
     ]
 
 
