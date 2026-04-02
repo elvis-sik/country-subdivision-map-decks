@@ -22,7 +22,7 @@ CSS_PATH = REPO_ROOT / "templates" / "south_africa.css"
 OUTPUT_APKG = REPO_ROOT / "out" / "south-africa-provinces.apkg"
 GENERATED_MEDIA_DIR = REPO_ROOT / "out" / "generated-media" / "south-africa"
 
-MODEL_ID = 1_893_420_501
+MODEL_ID = 1_893_420_503
 DECK_ID = 1_893_420_502
 
 FIELD_NAMES = [
@@ -264,7 +264,7 @@ def connections_panels() -> str:
 def south_africa_model() -> genanki.Model:
     return genanki.Model(
         MODEL_ID,
-        "Country Subdivisions - South Africa Provinces",
+        "Country Subdivisions - South Africa Provinces v2",
         fields=[{"name": name} for name in FIELD_NAMES],
         css=CSS_PATH.read_text(encoding="utf-8"),
         sort_field_index=0,
