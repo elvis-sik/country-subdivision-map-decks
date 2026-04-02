@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import html
 import re
+import subprocess
 from pathlib import Path
 
 try:
@@ -25,9 +26,9 @@ MODEL_ID = 1_893_420_501
 DECK_ID = 1_893_420_502
 
 FIELD_NAMES = [
-    "SubdivisionType",
-    "SubdivisionSlug",
     "SubdivisionName",
+    "SubdivisionSlug",
+    "SubdivisionType",
     "NativeName",
     "Aliases",
     "CapitalName",
@@ -49,6 +50,10 @@ def read_rows() -> list[dict[str, str]]:
 
 def basename(path_value: str) -> str:
     return Path(path_value).name
+
+
+def png_name(path_value: str) -> str:
+    return f"{Path(path_value).stem}.png"
 
 
 def sanitize_svg(svg_path: Path, output_path: Path) -> None:
@@ -82,19 +87,40 @@ def sanitize_svg(svg_path: Path, output_path: Path) -> None:
     output_path.write_text(text, encoding="utf-8")
 
 
+def render_png(svg_path: Path, png_path: Path) -> None:
+    subprocess.run(
+        [
+            "/opt/homebrew/bin/rsvg-convert",
+            "--keep-aspect-ratio",
+            "--width",
+            "1600",
+            "--output",
+            str(png_path),
+            str(svg_path),
+        ],
+        check=True,
+    )
+
+
 def prepare_media(rows: list[dict[str, str]]) -> list[str]:
     GENERATED_MEDIA_DIR.mkdir(parents=True, exist_ok=True)
+    for existing in GENERATED_MEDIA_DIR.iterdir():
+        if existing.is_file():
+            existing.unlink()
     prepared: dict[str, str] = {}
 
     for row in rows:
         for path_key in ("locator_svg_path", "base_svg_path"):
             source_path = REPO_ROOT / row[path_key]
-            output_path = GENERATED_MEDIA_DIR / source_path.name
+            sanitized_svg_path = GENERATED_MEDIA_DIR / source_path.name
+            output_path = GENERATED_MEDIA_DIR / png_name(source_path.name)
             if source_path.suffix.lower() == ".svg":
-                sanitize_svg(source_path, output_path)
+                sanitize_svg(source_path, sanitized_svg_path)
+                render_png(sanitized_svg_path, output_path)
+                sanitized_svg_path.unlink()
             else:
                 output_path.write_bytes(source_path.read_bytes())
-            prepared[source_path.name] = str(output_path)
+            prepared[output_path.name] = str(output_path)
 
     return [prepared[name] for name in sorted(prepared)]
 
@@ -241,7 +267,7 @@ def south_africa_model() -> genanki.Model:
         "Country Subdivisions - South Africa Provinces",
         fields=[{"name": name} for name in FIELD_NAMES],
         css=CSS_PATH.read_text(encoding="utf-8"),
-        sort_field_index=2,
+        sort_field_index=0,
         templates=[
             {
                 "name": "Locator Map -> Province",
@@ -342,9 +368,9 @@ def south_africa_model() -> genanki.Model:
 
 def csv_row_to_note_fields(row: dict[str, str]) -> list[str]:
     return [
-        row["subdivision_type"],
-        row["subdivision_slug"],
         row["subdivision_name"],
+        row["subdivision_slug"],
+        row["subdivision_type"],
         row["native_name"],
         row["aliases"],
         row["capital_name"],
@@ -354,8 +380,8 @@ def csv_row_to_note_fields(row: dict[str, str]) -> list[str]:
         join_chips(split_pipe(row["borders_countries"])),
         join_chips(split_pipe(row["borders_waters"])),
         row["connections"],
-        basename(row["locator_svg_path"]),
-        basename(row["base_svg_path"]),
+        png_name(row["locator_svg_path"]),
+        png_name(row["base_svg_path"]),
     ]
 
 
