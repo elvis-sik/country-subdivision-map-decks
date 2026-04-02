@@ -272,8 +272,7 @@ def south_africa_model() -> genanki.Model:
                     "Province to Locator",
                     """
 <div class="question">{{SubdivisionName}}</div>
-"""
-                    + "{{Card_BlankMap_HTML}}",
+""",
                     "{{Card_LocatorMap_HTML}}",
                     province_meta() + wiki_box("SubdivisionWikipediaUrl", "Province article"),
                 ),
