@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import copy
 import csv
 import html
 import re
+import struct
+import subprocess
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -22,9 +23,21 @@ SOURCE_CSV = REPO_ROOT / "data" / "subdivisions" / "turkey.csv"
 CSS_PATH = REPO_ROOT / "templates" / "turkey.css"
 OUTPUT_APKG = REPO_ROOT / "out" / "turkey-regions.apkg"
 GENERATED_MEDIA_DIR = REPO_ROOT / "out" / "generated-media" / "turkey"
-BLANK_MAP_FILENAME = "turkey-regions-blank.svg"
+BLANK_MAP_FILENAME = "turkey-regions-blank.png"
 SVG_NS = "http://www.w3.org/2000/svg"
 XML_NS = "http://www.w3.org/XML/1998/namespace"
+BLANK_FILL_RGB = (239, 230, 200)
+BLANK_STROKE_RGB = (132, 100, 59)
+BLANK_BACKGROUND_RGB = (255, 253, 248)
+REGION_MASK_COLORS = {
+    "aegean-region": (220, 231, 243),
+    "black-sea-region": (223, 231, 214),
+    "central-anatolia-region": (241, 225, 196),
+    "eastern-anatolia-region": (217, 214, 239),
+    "marmara-region": (207, 223, 240),
+    "mediterranean-region": (234, 216, 198),
+    "southeastern-anatolia-region": (228, 209, 201),
+}
 
 ET.register_namespace("", SVG_NS)
 
@@ -91,53 +104,204 @@ def sanitize_svg(svg_path: Path, output_path: Path) -> None:
     output_path.write_text(text, encoding="utf-8")
 
 
-def normalize_blank_region_node(node: ET.Element) -> None:
-    shape_tags = {
-        f"{{{SVG_NS}}}path",
-        f"{{{SVG_NS}}}polygon",
-        f"{{{SVG_NS}}}polyline",
-        f"{{{SVG_NS}}}rect",
-        f"{{{SVG_NS}}}ellipse",
-        f"{{{SVG_NS}}}circle",
-    }
-    if node.tag in shape_tags:
-        if node.attrib.get("fill", "").lower() == "none":
-            node.set("fill", "none")
-        else:
-            node.set("fill", "#fdfcea")
-        node.set("stroke", "#fffdf8")
-        node.set("stroke-width", "4")
-        node.set("stroke-linejoin", "round")
-        node.set("stroke-linecap", "round")
-    for child in node:
-        normalize_blank_region_node(child)
-
-
-def build_blank_map(locator_svg_path: Path, output_path: Path) -> None:
-    text = sanitize_svg_text(locator_svg_path.read_text(encoding="utf-8"))
-    root = ET.fromstring(text)
-    provinces = root.find(f".//{{{SVG_NS}}}g[@id='Provinces']")
-    if provinces is None:
-        raise RuntimeError(f"Could not find Provinces group in {locator_svg_path}")
-
+def build_region_mask_svg(rows: list[dict[str, str]], output_path: Path) -> None:
+    sample_svg = sanitize_svg_text((REPO_ROOT / rows[0]["locator_svg_path"]).read_text(encoding="utf-8"))
+    sample_root = ET.fromstring(sample_svg)
     blank_root = ET.Element(
         f"{{{SVG_NS}}}svg",
         {
             "version": "1.1",
-            "viewBox": root.attrib.get("viewBox", "0 0 1579.453 677.313"),
-            "width": root.attrib.get("width", "1579.453px"),
-            "height": root.attrib.get("height", "677.313px"),
+            "viewBox": sample_root.attrib.get("viewBox", "0 0 1579.453 677.313"),
+            "width": sample_root.attrib.get("width", "1579.453px"),
+            "height": sample_root.attrib.get("height", "677.313px"),
             f"{{{XML_NS}}}space": "preserve",
         },
     )
-    group = ET.SubElement(blank_root, f"{{{SVG_NS}}}g", {"id": "Regions"})
-    for child in provinces:
-        clone = copy.deepcopy(child)
-        normalize_blank_region_node(clone)
-        group.append(clone)
+    ET.SubElement(
+        blank_root,
+        f"{{{SVG_NS}}}rect",
+        {"x": "0", "y": "0", "width": "1579.453", "height": "677.313", "fill": "#fffdf8"},
+    )
+    all_group = ET.SubElement(blank_root, f"{{{SVG_NS}}}g", {"id": "TurkeyRegions"})
+    for row in rows:
+        locator_svg = sanitize_svg_text((REPO_ROOT / row["locator_svg_path"]).read_text(encoding="utf-8"))
+        locator_root = ET.fromstring(locator_svg)
+        provinces = locator_root.find(f".//{{{SVG_NS}}}g[@id='Provinces']")
+        if provinces is None:
+            raise RuntimeError(f"Could not find Provinces group in {row['locator_svg_path']}")
+        group = ET.SubElement(all_group, f"{{{SVG_NS}}}g", {"id": row["subdivision_slug"].replace("-", "_")})
+        color = REGION_MASK_COLORS[row["subdivision_slug"]]
+        fill_hex = f"#{color[0]:02x}{color[1]:02x}{color[2]:02x}"
+        for path in provinces.findall(f"{{{SVG_NS}}}path"):
+            if path.attrib.get("fill", "").lower() == "#c12838":
+                ET.SubElement(group, f"{{{SVG_NS}}}path", {"d": path.attrib["d"], "fill": fill_hex})
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     ET.ElementTree(blank_root).write(output_path, encoding="utf-8", xml_declaration=True)
+
+
+def render_svg_to_bmp(svg_path: Path, bmp_path: Path) -> None:
+    subprocess.run(
+        [
+            "/opt/homebrew/bin/rsvg-convert",
+            "-w",
+            "1200",
+            "-h",
+            "520",
+            str(svg_path),
+            "-o",
+            str(bmp_path.with_suffix(".png")),
+        ],
+        check=True,
+        stdout=subprocess.DEVNULL,
+    )
+    subprocess.run(
+        ["sips", "-s", "format", "bmp", str(bmp_path.with_suffix(".png")), "--out", str(bmp_path)],
+        check=True,
+        stdout=subprocess.DEVNULL,
+    )
+
+
+def read_bmp(path: Path) -> tuple[int, int, list[tuple[int, int, int]]]:
+    data = path.read_bytes()
+    if data[:2] != b"BM":
+        raise RuntimeError(f"Unsupported BMP header in {path}")
+
+    pixel_offset = struct.unpack_from("<I", data, 10)[0]
+    width = struct.unpack_from("<i", data, 18)[0]
+    height = struct.unpack_from("<i", data, 22)[0]
+    planes = struct.unpack_from("<H", data, 26)[0]
+    bits_per_pixel = struct.unpack_from("<H", data, 28)[0]
+    compression = struct.unpack_from("<I", data, 30)[0]
+    if planes != 1 or bits_per_pixel != 24 or compression != 0:
+        raise RuntimeError(f"Unsupported BMP format in {path}")
+
+    row_size = ((bits_per_pixel * width + 31) // 32) * 4
+    absolute_height = abs(height)
+    top_down = height < 0
+    pixels: list[tuple[int, int, int]] = []
+    for y in range(absolute_height):
+        row_index = y if top_down else (absolute_height - 1 - y)
+        row_start = pixel_offset + row_index * row_size
+        for x in range(width):
+            blue, green, red = data[row_start + x * 3 : row_start + x * 3 + 3]
+            pixels.append((red, green, blue))
+    return width, absolute_height, pixels
+
+
+def write_bmp(path: Path, width: int, height: int, pixels: list[tuple[int, int, int]]) -> None:
+    row_size = ((24 * width + 31) // 32) * 4
+    image_size = row_size * height
+    pixel_offset = 14 + 40
+    file_size = pixel_offset + image_size
+
+    header = bytearray()
+    header += b"BM"
+    header += struct.pack("<I", file_size)
+    header += b"\x00\x00\x00\x00"
+    header += struct.pack("<I", pixel_offset)
+    header += struct.pack("<I", 40)
+    header += struct.pack("<i", width)
+    header += struct.pack("<i", height)
+    header += struct.pack("<H", 1)
+    header += struct.pack("<H", 24)
+    header += struct.pack("<I", 0)
+    header += struct.pack("<I", image_size)
+    header += struct.pack("<I", 2835)
+    header += struct.pack("<I", 2835)
+    header += struct.pack("<I", 0)
+    header += struct.pack("<I", 0)
+
+    body = bytearray()
+    padding = b"\x00" * (row_size - width * 3)
+    for y in range(height - 1, -1, -1):
+        row = pixels[y * width : (y + 1) * width]
+        for red, green, blue in row:
+            body += bytes((blue, green, red))
+        body += padding
+
+    path.write_bytes(bytes(header) + bytes(body))
+
+
+def closest_region_label(pixel: tuple[int, int, int]) -> str:
+    all_colors = [("bg", BLANK_BACKGROUND_RGB), *REGION_MASK_COLORS.items()]
+    best_label = "bg"
+    best_distance = float("inf")
+    for label, color in all_colors:
+        distance = sum((pixel[channel] - color[channel]) ** 2 for channel in range(3))
+        if distance < best_distance:
+            best_label = label
+            best_distance = distance
+    return best_label
+
+
+def postprocess_region_mask(mask_bmp_path: Path, output_bmp_path: Path) -> None:
+    width, height, pixels = read_bmp(mask_bmp_path)
+    labels = [closest_region_label(pixel) for pixel in pixels]
+
+    def index(x: int, y: int) -> int:
+        return y * width + x
+
+    boundary = [False] * (width * height)
+    for y in range(height):
+        for x in range(width):
+            current_index = index(x, y)
+            current_label = labels[current_index]
+            if current_label == "bg":
+                continue
+            for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                nx = x + dx
+                ny = y + dy
+                if 0 <= nx < width and 0 <= ny < height:
+                    if labels[index(nx, ny)] != current_label:
+                        boundary[current_index] = True
+                        break
+
+    expanded_boundary = boundary[:]
+    for y in range(height):
+        for x in range(width):
+            if not boundary[index(x, y)]:
+                continue
+            for dy in (-1, 0, 1):
+                for dx in (-1, 0, 1):
+                    nx = x + dx
+                    ny = y + dy
+                    if 0 <= nx < width and 0 <= ny < height and labels[index(nx, ny)] != "bg":
+                        expanded_boundary[index(nx, ny)] = True
+
+    output_pixels: list[tuple[int, int, int]] = []
+    for pixel_index, label in enumerate(labels):
+        if label == "bg":
+            output_pixels.append(BLANK_BACKGROUND_RGB)
+        elif expanded_boundary[pixel_index]:
+            output_pixels.append(BLANK_STROKE_RGB)
+        else:
+            output_pixels.append(BLANK_FILL_RGB)
+    write_bmp(output_bmp_path, width, height, output_pixels)
+
+
+def convert_bmp_to_png(bmp_path: Path, png_path: Path) -> None:
+    subprocess.run(
+        ["sips", "-s", "format", "png", str(bmp_path), "--out", str(png_path)],
+        check=True,
+        stdout=subprocess.DEVNULL,
+    )
+
+
+def build_blank_map(rows: list[dict[str, str]], output_path: Path) -> None:
+    mask_svg_path = output_path.with_name("turkey-regions-mask.svg")
+    mask_bmp_path = output_path.with_name("turkey-regions-mask.bmp")
+    mask_png_path = output_path.with_name("turkey-regions-mask.png")
+    blank_bmp_path = output_path.with_name("turkey-regions-blank.bmp")
+
+    build_region_mask_svg(rows, mask_svg_path)
+    render_svg_to_bmp(mask_svg_path, mask_bmp_path)
+    postprocess_region_mask(mask_bmp_path, blank_bmp_path)
+    convert_bmp_to_png(blank_bmp_path, output_path)
+
+    for temporary_path in (mask_svg_path, mask_bmp_path, mask_png_path, blank_bmp_path):
+        if temporary_path.exists():
+            temporary_path.unlink()
 
 
 def prepare_media(rows: list[dict[str, str]]) -> list[str]:
@@ -157,7 +321,7 @@ def prepare_media(rows: list[dict[str, str]]) -> list[str]:
         prepared[output_path.name] = str(output_path)
 
     blank_output_path = GENERATED_MEDIA_DIR / BLANK_MAP_FILENAME
-    build_blank_map(REPO_ROOT / rows[0]["locator_svg_path"], blank_output_path)
+    build_blank_map(rows, blank_output_path)
     prepared[blank_output_path.name] = str(blank_output_path)
 
     return [prepared[name] for name in sorted(prepared)]
