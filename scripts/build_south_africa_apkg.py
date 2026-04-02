@@ -238,6 +238,35 @@ def connections_panels() -> str:
 """
 
 
+def connections_answer() -> str:
+    return """
+<div class="answer answer-connections">
+  <div class="section-label">Connections</div>
+  <div class="answer-main">{{SubdivisionName}}</div>
+  <div class="connection-grid">
+    {{#BordersSubdivisions}}
+    <div class="connection-block">
+      <div class="connection-label">Neighboring Provinces</div>
+      <div class="chip-row">{{BordersSubdivisions}}</div>
+    </div>
+    {{/BordersSubdivisions}}
+    {{#BordersCountries}}
+    <div class="connection-block">
+      <div class="connection-label">Countries</div>
+      <div class="chip-row">{{BordersCountries}}</div>
+    </div>
+    {{/BordersCountries}}
+    {{#BordersWaters}}
+    <div class="connection-block">
+      <div class="connection-label">Waters</div>
+      <div class="chip-row">{{BordersWaters}}</div>
+    </div>
+    {{/BordersWaters}}
+  </div>
+</div>
+"""
+
+
 def south_africa_model() -> genanki.Model:
     return genanki.Model(
         MODEL_ID,
@@ -327,14 +356,8 @@ def south_africa_model() -> genanki.Model:
 <div class="question">{{SubdivisionName}}</div>
 """
                     + "{{Card_LocatorMap_HTML}}",
-                    """
-<div class="answer">
-  <div class="section-label">Connections</div>
-  <div class="answer-main">{{SubdivisionName}}</div>
-  <div class="answer-sub">{{Connections}}</div>
-</div>
-""",
-                    connections_panels() + wiki_box("SubdivisionWikipediaUrl", "Province article"),
+                    connections_answer(),
+                    wiki_box("SubdivisionWikipediaUrl", "Province article"),
                 ),
             },
         ],

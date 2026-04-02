@@ -126,6 +126,31 @@
   color:var(--muted);
 }
 
+.answer-connections .answer-main{
+  margin-bottom:14px;
+}
+
+.connection-grid{
+  display:grid;
+  gap:12px;
+  margin-top:2px;
+}
+
+.connection-block{
+  border-radius:16px;
+  padding:12px 13px;
+  background:rgba(255,255,255,0.72);
+  border:1px solid rgba(11,93,59,0.10);
+}
+
+.connection-label{
+  font-family:"Gill Sans","Avenir Next","Trebuchet MS",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  font-size:11px;
+  color:var(--red);
+}
+
 .meta-grid{
   display:grid;
   gap:14px;
