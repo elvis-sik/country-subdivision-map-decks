@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import copy
 import csv
 import html
 import re
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 try:
     import genanki
@@ -20,6 +22,11 @@ SOURCE_CSV = REPO_ROOT / "data" / "subdivisions" / "turkey.csv"
 CSS_PATH = REPO_ROOT / "templates" / "turkey.css"
 OUTPUT_APKG = REPO_ROOT / "out" / "turkey-regions.apkg"
 GENERATED_MEDIA_DIR = REPO_ROOT / "out" / "generated-media" / "turkey"
+BLANK_MAP_FILENAME = "turkey-regions-blank.svg"
+SVG_NS = "http://www.w3.org/2000/svg"
+XML_NS = "http://www.w3.org/XML/1998/namespace"
+
+ET.register_namespace("", SVG_NS)
 
 MODEL_ID = 1_893_420_701
 DECK_ID = 1_893_420_702
@@ -49,8 +56,7 @@ def basename(path_value: str) -> str:
     return Path(path_value).name
 
 
-def sanitize_svg(svg_path: Path, output_path: Path) -> None:
-    text = svg_path.read_text(encoding="utf-8")
+def sanitize_svg_text(text: str) -> str:
     entity_map = {
         "&ns_extend;": "http://ns.adobe.com/Extensibility/1.0/",
         "&ns_ai;": "http://ns.adobe.com/AdobeIllustrator/10.0/",
@@ -75,9 +81,63 @@ def sanitize_svg(svg_path: Path, output_path: Path) -> None:
     )
     text = re.sub(r"\s+i:extraneous=\"[^\"]*\"", "", text)
     text = re.sub(r"\s+enable-background=\"[^\"]*\"", "", text)
+    return text
+
+
+def sanitize_svg(svg_path: Path, output_path: Path) -> None:
+    text = sanitize_svg_text(svg_path.read_text(encoding="utf-8"))
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(text, encoding="utf-8")
+
+
+def normalize_blank_region_node(node: ET.Element) -> None:
+    shape_tags = {
+        f"{{{SVG_NS}}}path",
+        f"{{{SVG_NS}}}polygon",
+        f"{{{SVG_NS}}}polyline",
+        f"{{{SVG_NS}}}rect",
+        f"{{{SVG_NS}}}ellipse",
+        f"{{{SVG_NS}}}circle",
+    }
+    if node.tag in shape_tags:
+        if node.attrib.get("fill", "").lower() == "none":
+            node.set("fill", "none")
+        else:
+            node.set("fill", "#fdfcea")
+        node.set("stroke", "#fffdf8")
+        node.set("stroke-width", "4")
+        node.set("stroke-linejoin", "round")
+        node.set("stroke-linecap", "round")
+    for child in node:
+        normalize_blank_region_node(child)
+
+
+def build_blank_map(locator_svg_path: Path, output_path: Path) -> None:
+    text = sanitize_svg_text(locator_svg_path.read_text(encoding="utf-8"))
+    root = ET.fromstring(text)
+    provinces = root.find(f".//{{{SVG_NS}}}g[@id='Provinces']")
+    if provinces is None:
+        raise RuntimeError(f"Could not find Provinces group in {locator_svg_path}")
+
+    blank_root = ET.Element(
+        f"{{{SVG_NS}}}svg",
+        {
+            "version": "1.1",
+            "viewBox": root.attrib.get("viewBox", "0 0 1579.453 677.313"),
+            "width": root.attrib.get("width", "1579.453px"),
+            "height": root.attrib.get("height", "677.313px"),
+            f"{{{XML_NS}}}space": "preserve",
+        },
+    )
+    group = ET.SubElement(blank_root, f"{{{SVG_NS}}}g", {"id": "Regions"})
+    for child in provinces:
+        clone = copy.deepcopy(child)
+        normalize_blank_region_node(clone)
+        group.append(clone)
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    ET.ElementTree(blank_root).write(output_path, encoding="utf-8", xml_declaration=True)
 
 
 def prepare_media(rows: list[dict[str, str]]) -> list[str]:
@@ -88,14 +148,17 @@ def prepare_media(rows: list[dict[str, str]]) -> list[str]:
 
     prepared: dict[str, str] = {}
     for row in rows:
-        for path_key in ("locator_svg_path", "base_svg_path"):
-            source_path = REPO_ROOT / row[path_key]
-            output_path = GENERATED_MEDIA_DIR / source_path.name
-            if source_path.suffix.lower() == ".svg":
-                sanitize_svg(source_path, output_path)
-            else:
-                output_path.write_bytes(source_path.read_bytes())
-            prepared[output_path.name] = str(output_path)
+        source_path = REPO_ROOT / row["locator_svg_path"]
+        output_path = GENERATED_MEDIA_DIR / source_path.name
+        if source_path.suffix.lower() == ".svg":
+            sanitize_svg(source_path, output_path)
+        else:
+            output_path.write_bytes(source_path.read_bytes())
+        prepared[output_path.name] = str(output_path)
+
+    blank_output_path = GENERATED_MEDIA_DIR / BLANK_MAP_FILENAME
+    build_blank_map(REPO_ROOT / rows[0]["locator_svg_path"], blank_output_path)
+    prepared[blank_output_path.name] = str(blank_output_path)
 
     return [prepared[name] for name in sorted(prepared)]
 
@@ -308,7 +371,7 @@ def csv_row_to_note_fields(row: dict[str, str]) -> list[str]:
         row["connections"],
         row["notes"],
         map_html(basename(row["locator_svg_path"]), f"Locator map of {row['subdivision_name']}"),
-        map_html(basename(row["base_svg_path"]), "Blank map of Turkey's geographical regions", "base"),
+        map_html(BLANK_MAP_FILENAME, "Blank map of Turkey's geographical regions", "base"),
     ]
 
 
