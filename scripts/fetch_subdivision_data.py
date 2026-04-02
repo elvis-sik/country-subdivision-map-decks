@@ -65,6 +65,108 @@ SUBDIVISION_SLUG_OVERRIDES = {
 }
 
 MANUAL_ROW_OVERRIDES = {
+    "iran": {
+        "bushehr": {
+            "borders_waters": "Persian Gulf",
+        },
+        "gilan": {
+            "borders_waters": "Caspian Sea",
+        },
+        "golestan": {
+            "borders_waters": "Caspian Sea",
+        },
+        "hormozgan": {
+            "borders_waters": "Gulf of Oman | Persian Gulf",
+        },
+        "khuzestan": {
+            "borders_waters": "Persian Gulf",
+        },
+        "mazandaran": {
+            "borders_waters": "Caspian Sea",
+        },
+        "sistan-and-baluchistan": {
+            "borders_waters": "Gulf of Oman",
+        },
+        "west-azerbaijan": {
+            "borders_countries": "Azerbaijan | Iraq | Turkey",
+        },
+    },
+    "mexico": {
+        "baja-california": {
+            "borders_waters": "Gulf of California | Pacific Ocean",
+        },
+        "baja-california-sur": {
+            "borders_waters": "Gulf of California | Pacific Ocean",
+        },
+        "campeche": {
+            "borders_waters": "Gulf of Mexico",
+        },
+        "chiapas": {
+            "borders_waters": "Pacific Ocean",
+        },
+        "coahuila": {
+            "borders_waters": "",
+        },
+        "colima": {
+            "borders_waters": "Pacific Ocean",
+        },
+        "guerrero": {
+            "borders_waters": "Pacific Ocean",
+        },
+        "jalisco": {
+            "borders_waters": "Pacific Ocean",
+        },
+        "mexico-city": {
+            "borders_waters": "",
+        },
+        "michoacan": {
+            "borders_waters": "Pacific Ocean",
+        },
+        "nayarit": {
+            "borders_waters": "Pacific Ocean",
+        },
+        "nuevo-leon": {
+            "borders_waters": "",
+        },
+        "oaxaca": {
+            "borders_waters": "Pacific Ocean",
+        },
+        "quintana-roo": {
+            "borders_waters": "Caribbean Sea",
+        },
+        "sinaloa": {
+            "borders_waters": "Gulf of California",
+        },
+        "sonora": {
+            "borders_waters": "Gulf of California",
+        },
+        "tabasco": {
+            "borders_waters": "Gulf of Mexico",
+        },
+        "tamaulipas": {
+            "borders_waters": "Gulf of Mexico",
+        },
+        "veracruz": {
+            "borders_waters": "Gulf of Mexico",
+        },
+        "yucatan": {
+            "borders_waters": "Gulf of Mexico",
+        },
+    },
+    "south-africa": {
+        "eastern-cape": {
+            "borders_waters": "Indian Ocean",
+        },
+        "kwazulu-natal": {
+            "borders_waters": "Indian Ocean",
+        },
+        "northern-cape": {
+            "borders_waters": "Atlantic Ocean",
+        },
+        "western-cape": {
+            "borders_waters": "Atlantic Ocean | Indian Ocean",
+        },
+    },
     "turkey": {
         "aegean-region": {
             "capital_name": "",
