@@ -56,3 +56,15 @@ Build the Mexico package:
 Output:
 
 - `out/mexico-federative-entities.apkg`
+
+Turkey now also has a country-specific builder because its seven geographical regions do not have official capitals.
+
+Build the Turkey package:
+
+```sh
+.venv/bin/python scripts/build_turkey_apkg.py
+```
+
+Output:
+
+- `out/turkey-regions.apkg`

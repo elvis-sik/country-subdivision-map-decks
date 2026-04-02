@@ -226,15 +226,23 @@ Key points captured there:
 - keep `SubdivisionName` as the first and sort field
 - optimize card backs to avoid unnecessary scrolling
 - present connections as structured blocks, not long prose
+- use country-specific note types when a country does not support the full shared card set
 
 ## Next Deck Pass
 
 Status: `in progress`
 
-Mexico is the next full scaffold after South Africa.
+Mexico is already scaffolded, and Turkey is now the next distinct country-specific pass.
 
 Current implementation:
 
 - reproducible APKG builder at `scripts/build_mexico_apkg.py`
 - deck package output at `out/mexico-federative-entities.apkg`
 - dedicated deck styling at `templates/mexico.css`
+- reproducible Turkey APKG builder at `scripts/build_turkey_apkg.py`
+- Turkey deck package output at `out/turkey-regions.apkg`
+- dedicated Turkey styling at `templates/turkey.css`
+
+Turkey-specific note-model decision:
+
+- omit capital cards entirely because the seven geographical regions do not have official capitals

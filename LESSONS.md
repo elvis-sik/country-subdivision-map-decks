@@ -22,6 +22,7 @@
 - `Blank -> Locator` works better when the back shows only the locator answer.
 - `Province/State -> Capital` works better when the front shows only the subdivision name.
 - `Connections` answers are easier to read as labeled blocks than as one long sentence.
+- Countries with different fact structures should get different note types instead of carrying dead or empty cards.
 
 ## Workflow
 
