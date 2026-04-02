@@ -144,3 +144,12 @@ Fetched counts:
 - South Africa: 1 base + 9 locators
 - Turkey: 1 base + 7 locators
 - Iran: 1 base + 31 locators
+
+## Normalization And Inspection
+
+Status: `done`
+
+- filenames normalized to stable lowercase hyphen slugs
+- machine-readable map manifest written to `maps/manifest.tsv`
+- SVG inspection report written to `maps/INSPECTION.md`
+- all 4 base SVGs and all 79 locator SVGs appear label-free by automated tag inspection

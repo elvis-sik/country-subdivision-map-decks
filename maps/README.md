@@ -15,6 +15,14 @@ This directory stores SVG source assets for the countries we decided to build de
   - country-level SVGs with internal subdivision borders
 - `locators/<country>/`
   - one highlighted locator SVG per target subdivision when Wikimedia Commons already has a usable series
+- `manifest.tsv`
+  - normalized local filenames plus source titles and display labels
+- `INSPECTION.md`
+  - quick validation report on whether the current SVGs are label-free
+
+## Naming
+
+Local SVG filenames are normalized to lowercase hyphenated slugs so downstream deck-generation scripts do not need to deal with spaces, parentheses, or source-specific naming quirks.
 
 ## Source Strategy
 
@@ -67,6 +75,17 @@ Fetched into the repo:
 - Turkey: 1 base SVG + 7 locator SVGs
 - Iran: 1 base SVG + 31 locator SVGs
 
+All of those files now use normalized local names.
+
+## Current Validation
+
+See [INSPECTION.md](maps/INSPECTION.md).
+
+Current result:
+
+- all 4 base SVGs appear label-free
+- all 79 locator SVGs appear label-free
+
 ## Next Step
 
-After the assets are fetched, normalize file naming and inspect whether any source SVGs need cleanup before deck generation.
+Use `manifest.tsv` and the normalized SVG filenames to generate the actual deck inputs.

@@ -47,6 +47,9 @@ fetch_category_titles() {
     | jq -r '.query.categorymembers[] | select(.ns == 6) | .title'
 }
 
+echo "Clearing previous SVG downloads..."
+find "$BASE_DIR" "$LOCATORS_DIR" -type f -name '*.svg' -delete 2>/dev/null || true
+
 echo "Fetching base SVGs..."
 download_commons_file "File:Mexico States blank map.svg" "$BASE_DIR/mexico"
 download_commons_file "File:SA provinces.svg" "$BASE_DIR/south-africa"
@@ -79,6 +82,12 @@ fetch_category_titles "Category:SVG locator maps of provinces in Iran (location 
   | while IFS= read -r title; do
       download_commons_file "$title" "$LOCATORS_DIR/iran"
     done
+
+echo "Normalizing filenames..."
+"$ROOT_DIR/scripts/normalize_map_filenames.sh"
+
+echo "Inspecting SVGs..."
+"$ROOT_DIR/scripts/inspect_svg_maps.sh"
 
 echo
 echo "Fetch complete."
