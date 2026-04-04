@@ -12,4 +12,8 @@ deck = [
 ]
 
 [tool.uv]
+exclude-newer = "7 days"
 package = false
+
+[tool.uv.pip]
+exclude-newer = "7 days"
