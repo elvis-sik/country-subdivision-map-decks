@@ -14,6 +14,8 @@
 - Sanitize older Illustrator-style SVGs before packaging them.
 - Strip `DOCTYPE`, `metadata`, `foreignObject`, `switch`, and similar export baggage.
 - Keep the sanitized copies as generated build artifacts rather than editing source maps in place.
+- When a base SVG is labeled or otherwise unusable, derive the blank map from the clean locator SVG layers instead of forcing the bad source file.
+- For layered locator maps, inspect the actual group hierarchy first; the best blank-map source may be a dedicated locator/contour group rather than the obvious top-level country group.
 
 ## Card Ergonomics
 

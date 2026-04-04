@@ -17,15 +17,13 @@ The main fetch script is:
 
 - `scripts/fetch_subdivision_data.py`
 
-## First deck build
-
-South Africa is the first end-to-end deck target.
-
-Build setup:
+## Build setup
 
 ```sh
 uv sync --extra deck
 ```
+
+## Deck builds
 
 Build the South Africa package:
 
@@ -36,16 +34,6 @@ Build the South Africa package:
 Output:
 
 - `out/south-africa-provinces.apkg`
-
-## Lessons
-
-Project notes from the South Africa pass live in:
-
-- `LESSONS.md`
-
-## Next deck build
-
-Mexico is the next full deck target.
 
 Build the Mexico package:
 
@@ -68,3 +56,19 @@ Build the Turkey package:
 Output:
 
 - `out/turkey-regions.apkg`
+
+Build the Iran package:
+
+```sh
+.venv/bin/python scripts/build_iran_apkg.py
+```
+
+Output:
+
+- `out/iran-provinces.apkg`
+
+## Lessons
+
+Project notes from the implemented deck passes live in:
+
+- `LESSONS.md`

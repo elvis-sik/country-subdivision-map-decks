@@ -1,0 +1,265 @@
+:root{
+  --paper:#fff9ef;
+  --paper-deep:#efe3d0;
+  --ink:#231b12;
+  --muted:#66584c;
+  --lapis:#1f4d78;
+  --lapis-deep:#183a5b;
+  --turquoise:#1f8f8b;
+  --turquoise-soft:#d7efec;
+  --saffron:#ca8f2f;
+  --saffron-soft:#f6e6bc;
+  --pomegranate:#a73d2e;
+  --shadow:rgba(35,27,18,0.16);
+  --rule:rgba(35,27,18,0.11);
+}
+
+.card{
+  font-family:"Baskerville","Iowan Old Style","Palatino Linotype",serif;
+  font-size:20px;
+  line-height:1.42;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(31,77,120,0.12), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(167,61,46,0.10), transparent 24%),
+    linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
+  padding:20px 16px 28px;
+}
+
+.shell{
+  max-width:860px;
+  margin:0 auto;
+}
+
+.plate{
+  background:linear-gradient(180deg, rgba(255,255,255,0.93), rgba(255,255,255,0.72));
+  border:1px solid var(--rule);
+  border-radius:28px;
+  box-shadow:0 18px 42px var(--shadow);
+  overflow:hidden;
+}
+
+.banner{
+  padding:18px 22px 14px;
+  background:
+    linear-gradient(180deg, rgba(10,24,35,0.18), rgba(10,24,35,0.04)),
+    linear-gradient(180deg, var(--lapis) 0%, var(--lapis-deep) 100%);
+  color:#fffaf2;
+}
+
+.banner::after{
+  content:"";
+  display:block;
+  height:8px;
+  margin-top:12px;
+  border-radius:999px;
+  background:
+    linear-gradient(90deg, var(--turquoise) 0 38%, var(--saffron) 38% 72%, var(--pomegranate) 72% 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.18);
+}
+
+.deck-label{
+  font-family:"Avenir Next","Gill Sans","Trebuchet MS",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:0.18em;
+  font-size:11px;
+  color:#fff7ee;
+  text-shadow:0 1px 2px rgba(0,0,0,0.18);
+}
+
+.card-kind{
+  margin-top:8px;
+  font-size:30px;
+  line-height:1.05;
+  color:#fff7ee;
+  text-shadow:0 1px 2px rgba(0,0,0,0.18);
+}
+
+.body{
+  padding:20px 22px 24px;
+}
+
+.prompt-label,
+.section-label,
+.wiki-label{
+  font-family:"Avenir Next","Gill Sans","Trebuchet MS",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:0.14em;
+  font-size:11px;
+}
+
+.prompt-label{
+  color:var(--pomegranate);
+}
+
+.question{
+  font-size:32px;
+  line-height:1.08;
+  margin:8px 0 0;
+  color:var(--pomegranate);
+}
+
+.map-frame{
+  margin-top:16px;
+  border-radius:24px;
+  border:1px solid rgba(31,77,120,0.14);
+  background:
+    linear-gradient(180deg, rgba(31,143,139,0.05), rgba(255,255,255,0.9));
+  padding:14px;
+}
+
+.map-frame.base{
+  background:
+    linear-gradient(180deg, rgba(202,143,47,0.11), rgba(255,255,255,0.94));
+}
+
+.map-image{
+  display:block;
+  width:100%;
+  max-height:420px;
+  object-fit:contain;
+}
+
+.answer{
+  margin-top:18px;
+  border-radius:22px;
+  padding:18px 18px 16px;
+  background:
+    linear-gradient(180deg, rgba(31,77,120,0.08), rgba(255,255,255,0.80));
+  border:1px solid rgba(31,77,120,0.14);
+}
+
+.answer-main{
+  font-size:40px;
+  line-height:1.02;
+  margin:8px 0 0;
+  color:var(--lapis);
+}
+
+.answer-native{
+  margin-top:10px;
+  font-size:25px;
+  color:var(--turquoise);
+}
+
+.answer-sub{
+  margin-top:10px;
+  font-size:17px;
+  color:var(--muted);
+}
+
+.answer-connections .answer-main{
+  margin-bottom:8px;
+}
+
+.meta-grid{
+  display:grid;
+  gap:14px;
+  margin-top:18px;
+}
+
+@media (min-width:760px){
+  .meta-grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+.panel{
+  border:1px solid var(--rule);
+  border-radius:18px;
+  padding:14px 15px;
+  background:rgba(255,255,255,0.8);
+}
+
+.panel-title{
+  font-family:"Avenir Next","Gill Sans","Trebuchet MS",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  font-size:11px;
+  color:var(--pomegranate);
+}
+
+.panel-value{
+  margin-top:8px;
+  font-size:17px;
+}
+
+.panel-native{
+  font-size:22px;
+  color:var(--turquoise);
+}
+
+.aliases-panel{
+  grid-column:1 / -1;
+}
+
+.chip-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:10px;
+}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:7px 12px;
+  background:linear-gradient(180deg, var(--saffron-soft), #fff7dd);
+  border:1px solid rgba(202,143,47,0.20);
+  font-family:"Avenir Next","Gill Sans","Trebuchet MS",sans-serif;
+  font-size:14px;
+}
+
+.connection-grid{
+  display:grid;
+  gap:12px;
+  margin-top:14px;
+}
+
+.connection-block{
+  border-radius:16px;
+  padding:12px 13px;
+  background:rgba(255,255,255,0.76);
+  border:1px solid rgba(31,77,120,0.10);
+}
+
+.connection-label{
+  font-family:"Avenir Next","Gill Sans","Trebuchet MS",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  font-size:11px;
+  color:var(--pomegranate);
+}
+
+.wiki-box{
+  margin-top:18px;
+  border-radius:18px;
+  border:1px solid rgba(31,77,120,0.14);
+  overflow:hidden;
+  background:#fff;
+}
+
+.wiki-header{
+  padding:10px 14px;
+  background:linear-gradient(180deg, rgba(31,77,120,0.09), rgba(255,255,255,0.84));
+  color:var(--lapis);
+}
+
+.wiki-frame{
+  display:block;
+  width:100%;
+  height:220px;
+  border:0;
+  background:#fff;
+}
+
+.wiki-link{
+  padding:10px 14px 14px;
+  font-family:"Avenir Next","Gill Sans","Trebuchet MS",sans-serif;
+  font-size:14px;
+}
+
+.wiki-link a{
+  color:var(--lapis);
+}

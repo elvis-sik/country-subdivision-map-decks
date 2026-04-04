@@ -156,7 +156,7 @@ Status: `done`
 
 ## Data Model
 
-Status: `in progress`
+Status: `done`
 
 Current canonical CSV fields include:
 
@@ -197,18 +197,28 @@ Modeling choice:
 
 - use country-specific note types when helpful, so each deck can have its own styling and card ergonomics
 
-## First Deck Pass
+## Deck Builds
 
-Status: `in progress`
+Status: `done`
 
-South Africa is the first full deck scaffold.
+Implemented country-specific builders:
 
-Current implementation:
+- `scripts/build_south_africa_apkg.py`
+- `scripts/build_mexico_apkg.py`
+- `scripts/build_turkey_apkg.py`
+- `scripts/build_iran_apkg.py`
 
-- reproducible APKG builder at `scripts/build_south_africa_apkg.py`
-- deck package output at `out/south-africa-provinces.apkg`
-- dedicated deck styling at `templates/south_africa.css`
+Current package outputs:
+
+- `out/south-africa-provinces.apkg`
+- `out/mexico-federative-entities.apkg`
+- `out/turkey-regions.apkg`
+- `out/iran-provinces.apkg`
+
+Notes:
+
 - card backs include a small Wikipedia iframe plus a direct article link fallback
+- Iran's blank map is generated from the locator SVG's province fill and contour layers, not from the labeled base SVG
 
 ## Lessons Learned
 
