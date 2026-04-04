@@ -33,7 +33,7 @@ BLANK_STROKE = "#8e6f44"
 
 ET.register_namespace("", SVG_NS)
 
-MODEL_ID = 1_893_420_801
+MODEL_ID = 1_893_420_803
 DECK_ID = 1_893_420_802
 
 FIELD_NAMES = [
@@ -280,6 +280,23 @@ def back_shell(card_kind: str, prompt_html: str, answer_html: str, extra_html: s
 """
 
 
+def answer_first_back_shell(card_kind: str, answer_html: str, extra_html: str = "") -> str:
+    return f"""
+<div class="shell">
+  <div class="plate">
+    <div class="banner">
+      <div class="deck-label">Iran Provinces</div>
+      <div class="card-kind">{card_kind}</div>
+    </div>
+    <div class="body">
+      {answer_html}
+      {extra_html}
+    </div>
+  </div>
+</div>
+"""
+
+
 def province_answer() -> str:
     return """
 <div class="answer">
@@ -377,7 +394,7 @@ def connections_answer() -> str:
 def iran_model() -> genanki.Model:
     return genanki.Model(
         MODEL_ID,
-        "Country Subdivisions - Iran Provinces v1",
+        "Country Subdivisions - Iran Provinces v2",
         fields=[{"name": name} for name in FIELD_NAMES],
         css=CSS_PATH.read_text(encoding="utf-8"),
         sort_field_index=0,
@@ -385,11 +402,12 @@ def iran_model() -> genanki.Model:
             {
                 "name": "Locator Map -> Province",
                 "qfmt": front_shell("Locator to Province", "{{Card_LocatorMap_HTML}}"),
-                "afmt": back_shell(
+                "afmt": answer_first_back_shell(
                     "Locator to Province",
-                    "{{Card_LocatorMap_HTML}}",
                     province_answer(),
-                    province_meta() + wiki_box("SubdivisionWikipediaUrl", "Province article"),
+                    "{{Card_LocatorMap_HTML}}"
+                    + province_meta()
+                    + wiki_box("SubdivisionWikipediaUrl", "Province article"),
                 ),
             },
             {
@@ -418,14 +436,10 @@ def iran_model() -> genanki.Model:
 <div class="question">{{SubdivisionName}}</div>
 """,
                 ),
-                "afmt": back_shell(
+                "afmt": answer_first_back_shell(
                     "Province to Capital",
-                    """
-<div class="question">{{SubdivisionName}}</div>
-"""
-                    + "{{Card_LocatorMap_HTML}}",
                     capital_answer(),
-                    wiki_box("CapitalWikipediaUrl", "Capital article"),
+                    "{{Card_LocatorMap_HTML}}" + wiki_box("CapitalWikipediaUrl", "Capital article"),
                 ),
             },
             {
@@ -454,14 +468,10 @@ def iran_model() -> genanki.Model:
 """
                     + "{{Card_LocatorMap_HTML}}",
                 ),
-                "afmt": back_shell(
+                "afmt": answer_first_back_shell(
                     "Province to Connections",
-                    """
-<div class="question">{{SubdivisionName}}</div>
-"""
-                    + "{{Card_LocatorMap_HTML}}",
                     connections_answer(),
-                    wiki_box("SubdivisionWikipediaUrl", "Province article"),
+                    "{{Card_LocatorMap_HTML}}" + wiki_box("SubdivisionWikipediaUrl", "Province article"),
                 ),
             },
         ],

@@ -21,6 +21,8 @@
 
 - Fronts should stay compact and ask only one thing.
 - Backs should avoid repeating prompt maps when that forces scrolling.
+- When the back's answer is text, put it above any supporting maps.
+- When the back's answer is a locator map, let the locator remain the dominant element and keep any prompt text minimal.
 - `Blank -> Locator` works better when the back shows only the locator answer.
 - `Province/State -> Capital` works better when the front shows only the subdivision name.
 - `Connections` answers are easier to read as labeled blocks than as one long sentence.
