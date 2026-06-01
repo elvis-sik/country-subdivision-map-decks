@@ -10,6 +10,10 @@ dependencies = []
 deck = [
   "genanki>=0.13.1",
 ]
+dev = [
+  "mypy>=1.13.0",
+  "ruff>=0.6.0",
+]
 
 [tool.uv]
 exclude-newer = "7 days"
@@ -17,3 +21,12 @@ package = false
 
 [tool.uv.pip]
 exclude-newer = "7 days"
+
+[tool.ruff]
+line-length = 100
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+follow_imports = "skip"
+check_untyped_defs = false

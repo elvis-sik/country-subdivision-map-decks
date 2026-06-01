@@ -79,7 +79,7 @@ All of those files now use normalized local names.
 
 ## Current Validation
 
-See [INSPECTION.md](maps/INSPECTION.md).
+See [INSPECTION.md](./INSPECTION.md).
 
 Current result:
 
