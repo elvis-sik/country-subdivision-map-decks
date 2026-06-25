@@ -315,11 +315,28 @@ def postprocess_region_mask(mask_bmp_path: Path, output_bmp_path: Path) -> None:
 
 
 def convert_bmp_to_png(bmp_path: Path, png_path: Path) -> None:
-    subprocess.run(
-        ["sips", "-s", "format", "png", str(bmp_path), "--out", str(png_path)],
-        check=True,
-        stdout=subprocess.DEVNULL,
-    )
+    if sips := shutil.which("sips"):
+        subprocess.run(
+            [sips, "-s", "format", "png", str(bmp_path), "--out", str(png_path)],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+        return
+    if magick := shutil.which("magick"):
+        subprocess.run(
+            [magick, str(bmp_path), str(png_path)],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+        return
+    if convert := shutil.which("convert"):
+        subprocess.run(
+            [convert, str(bmp_path), str(png_path)],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+        return
+    raise FileNotFoundError("Missing PNG converter: install sips or ImageMagick")
 
 
 def build_blank_map(rows: list[dict[str, str]], output_path: Path) -> None:
