@@ -22,6 +22,19 @@ package = false
 [tool.uv.pip]
 exclude-newer = "7 days"
 
+[tool.anki-addon-workbench]
+project_name = "Country Subdivision Map Decks"
+seed_apkgs = [
+  "out/south-africa-provinces.apkg",
+  "out/mexico-federative-entities.apkg",
+  "out/turkey-regions.apkg",
+  "out/iran-provinces.apkg",
+]
+anki_version = "25.09"
+docker_image = "country-subdivision-map-decks-anki-workbench"
+docker_workbench_spec = "anki-addon-workbench[gui]==0.4.0"
+deck_smoke_render_limit = 3
+
 [tool.ruff]
 line-length = 100
 

@@ -9,6 +9,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+from typing import Any
 
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +22,9 @@ RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 ENTITY_BATCH_SIZE = 25
 COUNTRY_ENTITY_QID = "Q6256"
 
-COUNTRY_CONFIGS = {
+JsonDict = dict[str, Any]
+
+COUNTRY_CONFIGS: dict[str, JsonDict] = {
     "iran": {
         "country_name": "Iran",
         "country_qid": "Q794",
@@ -306,8 +309,8 @@ def wikidata_request(params: dict) -> dict:
     raise RuntimeError("Wikidata API retries exhausted")
 
 
-def wbgetentities(ids: list[str]) -> dict[str, dict]:
-    entities: dict[str, dict] = {}
+def wbgetentities(ids: list[str]) -> dict[str, JsonDict]:
+    entities: dict[str, JsonDict] = {}
     for batch in chunked(ids, ENTITY_BATCH_SIZE):
         response = wikidata_request(
             {
@@ -323,8 +326,8 @@ def wbgetentities(ids: list[str]) -> dict[str, dict]:
     return entities
 
 
-def load_map_manifest() -> dict:
-    manifest = {"base": {}, "locators": {}}
+def load_map_manifest() -> JsonDict:
+    manifest: JsonDict = {"base": {}, "locators": {}}
     with MAP_MANIFEST_PATH.open(newline="", encoding="utf-8") as handle:
         reader = csv.DictReader(handle, delimiter="\t")
         for row in reader:
@@ -335,7 +338,7 @@ def load_map_manifest() -> dict:
     return manifest
 
 
-def extract_label(entity: dict) -> str:
+def extract_label(entity: JsonDict) -> str:
     return entity.get("labels", {}).get("en", {}).get("value", "")
 
 
@@ -449,7 +452,7 @@ def init_row(country_slug: str, config: dict, manifest: dict, entity: dict) -> d
     }
 
 
-def collect_country_rows(country_slug: str, config: dict, manifest: dict) -> list[dict]:
+def collect_country_rows(country_slug: str, config: JsonDict, manifest: JsonDict) -> list[dict]:
     subdivision_qids = collect_subdivision_qids(config)
     print(f"  Found {len(subdivision_qids)} subdivisions", file=sys.stderr)
 
@@ -468,7 +471,7 @@ def collect_country_rows(country_slug: str, config: dict, manifest: dict) -> lis
     print(f"  Fetching {len(related_qids)} related entities", file=sys.stderr)
     related_entities = wbgetentities(sorted(related_qids)) if related_qids else {}
 
-    foreign_country_qids = set()
+    foreign_country_qids: set[str] = set()
     for row in rows:
         for neighbor_qid in row["_neighbor_qids"]:
             if neighbor_qid in subdivision_qid_set:

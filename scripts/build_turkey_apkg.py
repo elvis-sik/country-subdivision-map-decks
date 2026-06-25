@@ -3,7 +3,9 @@ from __future__ import annotations
 
 import csv
 import html
+import os
 import re
+import shutil
 import struct
 import subprocess
 from pathlib import Path
@@ -104,6 +106,20 @@ def sanitize_svg(svg_path: Path, output_path: Path) -> None:
     output_path.write_text(text, encoding="utf-8")
 
 
+def tool_command(env_var: str, binary: str, fallback: Path) -> str:
+    configured = os.environ.get(env_var)
+    if configured:
+        return configured
+    found = shutil.which(binary)
+    if found:
+        return found
+    if fallback.is_file():
+        return str(fallback)
+    raise FileNotFoundError(
+        f"Missing {binary}. Install it or set {env_var} to its executable path."
+    )
+
+
 def build_region_mask_svg(rows: list[dict[str, str]], output_path: Path) -> None:
     sample_svg = sanitize_svg_text((REPO_ROOT / rows[0]["locator_svg_path"]).read_text(encoding="utf-8"))
     sample_root = ET.fromstring(sample_svg)
@@ -141,25 +157,43 @@ def build_region_mask_svg(rows: list[dict[str, str]], output_path: Path) -> None
 
 
 def render_svg_to_bmp(svg_path: Path, bmp_path: Path) -> None:
+    png_path = bmp_path.with_suffix(".png")
     subprocess.run(
         [
-            "/opt/homebrew/bin/rsvg-convert",
+            tool_command("RSVG_CONVERT_BIN", "rsvg-convert", Path("/opt/homebrew/bin/rsvg-convert")),
             "-w",
             "1200",
             "-h",
             "520",
             str(svg_path),
             "-o",
-            str(bmp_path.with_suffix(".png")),
+            str(png_path),
         ],
         check=True,
         stdout=subprocess.DEVNULL,
     )
-    subprocess.run(
-        ["sips", "-s", "format", "bmp", str(bmp_path.with_suffix(".png")), "--out", str(bmp_path)],
-        check=True,
-        stdout=subprocess.DEVNULL,
-    )
+    if sips := shutil.which("sips"):
+        subprocess.run(
+            [sips, "-s", "format", "bmp", str(png_path), "--out", str(bmp_path)],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+        return
+    if magick := shutil.which("magick"):
+        subprocess.run(
+            [magick, str(png_path), f"bmp3:{bmp_path}"],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+        return
+    if convert := shutil.which("convert"):
+        subprocess.run(
+            [convert, str(png_path), f"bmp3:{bmp_path}"],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+        return
+    raise FileNotFoundError("Missing BMP converter: install sips or ImageMagick")
 
 
 def read_bmp(path: Path) -> tuple[int, int, list[tuple[int, int, int]]]:
