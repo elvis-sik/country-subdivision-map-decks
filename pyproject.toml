@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Source data and deck builders for country subdivision map decks."
 readme = "README.md"
 requires-python = ">=3.12"
+license = "MIT"
 dependencies = []
 
 [project.optional-dependencies]
@@ -11,6 +12,7 @@ deck = [
   "genanki>=0.13.1",
 ]
 dev = [
+  "anki-addon-workbench[gui]==0.4.0",
   "mypy>=1.13.0",
   "ruff>=0.6.0",
 ]
