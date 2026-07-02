@@ -2,7 +2,6 @@
 
 [![Anki Workbench](https://github.com/elvis-sik/country-subdivision-map-decks/actions/workflows/anki-workbench.yml/badge.svg)](https://github.com/elvis-sik/country-subdivision-map-decks/actions/workflows/anki-workbench.yml)
 ![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
-![Anki Workbench 0.4.0](https://img.shields.io/badge/anki--addon--workbench-0.4.0-informational)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 Deck-building workspace for first-level country subdivision geography decks.
@@ -73,14 +72,6 @@ Build the Iran package:
 Output:
 
 - `out/iran-provinces.apkg`
-
-## Preview screenshot
-
-The README screenshot is generated from the built APKGs in a disposable Anki profile:
-
-```sh
-uv run --extra dev python scripts/capture_readme_screenshot.py
-```
 
 ## Lessons
 

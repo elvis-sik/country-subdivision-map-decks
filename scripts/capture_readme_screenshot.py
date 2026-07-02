@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -11,6 +12,9 @@ from pathlib import Path
 
 
 DEFAULT_OUT = Path("docs/screenshots/readme-preview.png")
+SIDE_ENV = "ANKI_README_SCREENSHOT_SIDE"
+WIDTH_ENV = "ANKI_README_SCREENSHOT_WIDTH"
+HEIGHT_ENV = "ANKI_README_SCREENSHOT_HEIGHT"
 
 
 PROBE_SOURCE = r'''
@@ -18,6 +22,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import traceback
 from pathlib import Path
 
@@ -27,6 +32,9 @@ from aqt.webview import AnkiWebView
 
 RESULT_ENV = "ANKI_ADDON_WORKBENCH_RESULT"
 SCREENSHOT_ENV = "ANKI_ADDON_WORKBENCH_SCREENSHOT"
+SIDE_ENV = "ANKI_README_SCREENSHOT_SIDE"
+WIDTH_ENV = "ANKI_README_SCREENSHOT_WIDTH"
+HEIGHT_ENV = "ANKI_README_SCREENSHOT_HEIGHT"
 SETTLE_MS = 1800
 PREVIEW_WINDOW = None
 
@@ -66,6 +74,29 @@ def _write_result(payload):
         )
 
 
+def _answer_content(card):
+    html = card.answer()
+    styles = "".join(
+        re.findall(r"<style\b[^>]*>.*?</style>", html, flags=re.I | re.S)
+    )
+    lower = html.lower()
+    panel = lower.find('<div class="wrap"><div class="answer-panel"')
+    if panel == -1:
+        panel = lower.find('<div class="answer-panel"')
+    if panel != -1:
+        return styles + html[panel:]
+
+    marker = lower.find("id=answer")
+    if marker == -1:
+        return html
+
+    start = html.rfind("<hr", 0, marker)
+    end = html.find(">", marker)
+    if start == -1 or end == -1:
+        return html
+    return styles + html[end + 1 :]
+
+
 def _capture(card):
     global PREVIEW_WINDOW
     screenshot_path = os.environ.get(SCREENSHOT_ENV)
@@ -96,15 +127,19 @@ def _show_card():
     global PREVIEW_WINDOW
     try:
         card = _pick_card()
+        side = os.environ.get(SIDE_ENV, "question")
+        width = int(os.environ.get(WIDTH_ENV, "1040"))
+        height = int(os.environ.get(HEIGHT_ENV, "780"))
+        content = _answer_content(card) if side == "answer" else card.question()
         PREVIEW_WINDOW = QWidget(mw)
         PREVIEW_WINDOW.setWindowTitle("README card preview")
-        PREVIEW_WINDOW.resize(1040, 780)
+        PREVIEW_WINDOW.resize(width, height)
         layout = QVBoxLayout(PREVIEW_WINDOW)
         layout.setContentsMargins(0, 0, 0, 0)
         web = AnkiWebView(PREVIEW_WINDOW, title="README card preview")
         layout.addWidget(web)
         web.stdHtml(
-            f'<main class="card card{int(card.ord) + 1}">{card.question()}</main>',
+            f'<main class="card card{int(card.ord) + 1}">{content}</main>',
             context=mw.reviewer,
         )
         PREVIEW_WINDOW.show()
@@ -176,6 +211,13 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--timeout", type=int, default=60)
+    parser.add_argument("--width", type=int, default=1040)
+    parser.add_argument("--height", type=int, default=780)
+    parser.add_argument(
+        "--side",
+        choices=("question", "answer", "front", "back"),
+        default="question",
+    )
     return parser.parse_args()
 
 
@@ -200,7 +242,13 @@ def main() -> int:
             "--timeout",
             str(args.timeout),
         ]
-        completed = subprocess.run(command, check=False, text=True)
+        env = {
+            **os.environ,
+            WIDTH_ENV: str(args.width),
+            HEIGHT_ENV: str(args.height),
+            SIDE_ENV: "answer" if args.side in {"answer", "back"} else "question",
+        }
+        completed = subprocess.run(command, check=False, text=True, env=env)
     return completed.returncode
 
 
