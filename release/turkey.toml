@@ -2,6 +2,7 @@
 target = "deck"
 
 [tool.anki-addon-release.ankiweb]
+shared_id = "1207470716"
 listing_file = "release/turkey.md"
 login_email_env = "ANKIWEB_EMAIL"
 login_password_env = "ANKIWEB_PASSWORD"

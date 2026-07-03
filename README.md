@@ -1,6 +1,7 @@
 # country-subdivision-map-decks
 
 [![Anki Workbench](https://github.com/elvis-sik/country-subdivision-map-decks/actions/workflows/anki-workbench.yml/badge.svg)](https://github.com/elvis-sik/country-subdivision-map-decks/actions/workflows/anki-workbench.yml)
+[![AnkiWeb](https://img.shields.io/badge/AnkiWeb-4_shared_decks-15a5ef)](#download)
 ![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -14,6 +15,15 @@ Current active countries:
 - South Africa
 - Turkey
 - Iran
+
+## Download
+
+Install the shared decks from AnkiWeb:
+
+- [Mexico Federative Entities: Map Cards](https://ankiweb.net/shared/info/1177438513)
+- [South Africa Provinces: Map Cards](https://ankiweb.net/shared/info/1910958626)
+- [Turkey Regions: Map Cards](https://ankiweb.net/shared/info/1207470716)
+- [Iran Provinces: Map Cards](https://ankiweb.net/shared/info/1452052368)
 
 ## Data
 
