@@ -4,7 +4,7 @@ tags: turkey geography maps regions
 support_url: https://github.com/elvis-sik/country-subdivision-map-decks
 ---
 
-![Country subdivision card preview](https://raw.githubusercontent.com/elvis-sik/country-subdivision-map-decks/main/docs/screenshots/readme-preview.png)
+![Turkey regions card preview](https://raw.githubusercontent.com/elvis-sik/country-subdivision-map-decks/main/docs/screenshots/turkey-preview.png)
 
 Map-based Anki cards for Turkey's geographical regions.
 

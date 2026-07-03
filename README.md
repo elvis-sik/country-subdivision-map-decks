@@ -7,7 +7,11 @@
 
 Deck-building workspace for first-level country subdivision geography decks.
 
-![Country subdivision card preview](docs/screenshots/readme-preview.png)
+| Mexico | South Africa |
+| --- | --- |
+| ![Mexico federative entities card preview](docs/screenshots/mexico-preview.png) | ![South Africa provinces card preview](docs/screenshots/south-africa-preview.png) |
+| Turkey | Iran |
+| ![Turkey regions card preview](docs/screenshots/turkey-preview.png) | ![Iran provinces card preview](docs/screenshots/iran-preview.png) |
 
 Current active countries:
 

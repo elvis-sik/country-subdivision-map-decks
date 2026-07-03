@@ -4,7 +4,7 @@ tags: mexico geography maps states federative-entities
 support_url: https://github.com/elvis-sik/country-subdivision-map-decks
 ---
 
-![Country subdivision card preview](https://raw.githubusercontent.com/elvis-sik/country-subdivision-map-decks/main/docs/screenshots/readme-preview.png)
+![Mexico federative entities card preview](https://raw.githubusercontent.com/elvis-sik/country-subdivision-map-decks/main/docs/screenshots/mexico-preview.png)
 
 Map-based Anki cards for Mexico's federative entities.
 

@@ -4,7 +4,7 @@ tags: south-africa geography maps provinces
 support_url: https://github.com/elvis-sik/country-subdivision-map-decks
 ---
 
-![Country subdivision card preview](https://raw.githubusercontent.com/elvis-sik/country-subdivision-map-decks/main/docs/screenshots/readme-preview.png)
+![South Africa provinces card preview](https://raw.githubusercontent.com/elvis-sik/country-subdivision-map-decks/main/docs/screenshots/south-africa-preview.png)
 
 Map-based Anki cards for South Africa's provinces.
 

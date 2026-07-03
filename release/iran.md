@@ -4,7 +4,7 @@ tags: iran geography maps provinces
 support_url: https://github.com/elvis-sik/country-subdivision-map-decks
 ---
 
-![Country subdivision card preview](https://raw.githubusercontent.com/elvis-sik/country-subdivision-map-decks/main/docs/screenshots/readme-preview.png)
+![Iran provinces card preview](https://raw.githubusercontent.com/elvis-sik/country-subdivision-map-decks/main/docs/screenshots/iran-preview.png)
 
 Map-based Anki cards for Iran's provinces.
 

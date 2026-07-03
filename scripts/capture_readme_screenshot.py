@@ -11,7 +11,7 @@ import tomllib
 from pathlib import Path
 
 
-DEFAULT_OUT = Path("docs/screenshots/readme-preview.png")
+DEFAULT_OUT = Path("docs/screenshots/card-preview.png")
 SIDE_ENV = "ANKI_README_SCREENSHOT_SIDE"
 WIDTH_ENV = "ANKI_README_SCREENSHOT_WIDTH"
 HEIGHT_ENV = "ANKI_README_SCREENSHOT_HEIGHT"
@@ -192,16 +192,25 @@ def _toml_string(value: str | Path) -> str:
     return json.dumps(str(value))
 
 
-def _write_temp_config(repo_root: Path, temp_root: Path, out: Path) -> Path:
+def _write_temp_config(repo_root: Path, temp_root: Path, out: Path, seed_apkgs: list[Path]) -> Path:
     table = _load_workbench_table(repo_root)
     probe_dir = temp_root / "readme_screenshot_probe"
     probe_dir.mkdir(parents=True)
     (probe_dir / "__init__.py").write_text(PROBE_SOURCE, encoding="utf-8")
 
-    seed_apkgs = table.get("seed_apkgs", [])
-    if not isinstance(seed_apkgs, list) or not seed_apkgs:
+    raw_seed_apkgs = table.get("seed_apkgs", [])
+    if not isinstance(raw_seed_apkgs, list):
         raise SystemExit("workbench seed_apkgs must be configured")
-    resolved_apkgs = [(repo_root / str(path)).resolve() for path in seed_apkgs]
+    configured_seed_apkgs = [str(path) for path in raw_seed_apkgs]
+    if seed_apkgs:
+        selected_seed_apkgs = [str(path) for path in seed_apkgs]
+    else:
+        if len(configured_seed_apkgs) > 1:
+            raise SystemExit("multiple seed APKGs are configured; pass --seed-apkg")
+        selected_seed_apkgs = configured_seed_apkgs
+    if not selected_seed_apkgs:
+        raise SystemExit("workbench seed_apkgs must be configured")
+    resolved_apkgs = [(repo_root / str(path)).resolve() for path in selected_seed_apkgs]
     missing = [path for path in resolved_apkgs if not path.exists()]
     if missing:
         joined = "\n".join(str(path) for path in missing)
@@ -242,6 +251,13 @@ def parse_args() -> argparse.Namespace:
         "--template",
         help="exact card-template name to capture",
     )
+    parser.add_argument(
+        "--seed-apkg",
+        type=Path,
+        action="append",
+        default=[],
+        help="APKG to import for the screenshot; may be passed multiple times",
+    )
     return parser.parse_args()
 
 
@@ -253,7 +269,7 @@ def main() -> int:
 
     with tempfile.TemporaryDirectory(prefix="anki-readme-shot-") as temp:
         temp_root = Path(temp)
-        _write_temp_config(repo_root, temp_root, out)
+        _write_temp_config(repo_root, temp_root, out, args.seed_apkg)
         command = [
             sys.executable,
             "-m",
