@@ -15,6 +15,7 @@ DEFAULT_OUT = Path("docs/screenshots/readme-preview.png")
 SIDE_ENV = "ANKI_README_SCREENSHOT_SIDE"
 WIDTH_ENV = "ANKI_README_SCREENSHOT_WIDTH"
 HEIGHT_ENV = "ANKI_README_SCREENSHOT_HEIGHT"
+TEMPLATE_ENV = "ANKI_README_SCREENSHOT_TEMPLATE"
 
 
 PROBE_SOURCE = r'''
@@ -27,7 +28,7 @@ import traceback
 from pathlib import Path
 
 from aqt import gui_hooks, mw
-from aqt.qt import QTimer, QVBoxLayout, QWidget
+from aqt.qt import Qt, QTimer, QVBoxLayout, QWidget
 from aqt.webview import AnkiWebView
 
 RESULT_ENV = "ANKI_ADDON_WORKBENCH_RESULT"
@@ -35,8 +36,19 @@ SCREENSHOT_ENV = "ANKI_ADDON_WORKBENCH_SCREENSHOT"
 SIDE_ENV = "ANKI_README_SCREENSHOT_SIDE"
 WIDTH_ENV = "ANKI_README_SCREENSHOT_WIDTH"
 HEIGHT_ENV = "ANKI_README_SCREENSHOT_HEIGHT"
+TEMPLATE_ENV = "ANKI_README_SCREENSHOT_TEMPLATE"
 SETTLE_MS = 1800
 PREVIEW_WINDOW = None
+
+
+def _card_template_name(card):
+    try:
+        template = card.template()
+    except Exception:
+        return ""
+    if isinstance(template, dict):
+        return str(template.get("name") or "")
+    return ""
 
 
 def _pick_card():
@@ -44,9 +56,13 @@ def _pick_card():
     if col is None:
         raise RuntimeError("collection is unavailable")
 
+    desired_template = os.environ.get(TEMPLATE_ENV, "").strip()
     best = None
     for card_id in col.db.list("select id from cards order by id"):
         card = col.get_card(card_id)
+        template_name = _card_template_name(card)
+        if desired_template and template_name != desired_template:
+            continue
         question = card.question()
         answer = card.answer()
         haystack = f"{question}\n{answer}".lower()
@@ -62,6 +78,8 @@ def _pick_card():
             best = candidate
 
     if best is None:
+        if desired_template:
+            raise RuntimeError(f"no cards found for template {desired_template!r}")
         raise RuntimeError("no cards found in collection")
     return best[2]
 
@@ -76,25 +94,25 @@ def _write_result(payload):
 
 def _answer_content(card):
     html = card.answer()
-    styles = "".join(
-        re.findall(r"<style\b[^>]*>.*?</style>", html, flags=re.I | re.S)
+    wiki_panel = (
+        r'\s*<div class="wiki-panel">\s*'
+        r'<div class="fact-title">.*?</div>\s*'
+        r'<iframe\b.*?</iframe>\s*'
+        r'<a\b.*?</a>\s*'
+        r"</div>"
     )
-    lower = html.lower()
-    panel = lower.find('<div class="wrap"><div class="answer-panel"')
-    if panel == -1:
-        panel = lower.find('<div class="answer-panel"')
-    if panel != -1:
-        return styles + html[panel:]
+    return re.sub(wiki_panel, "", html, flags=re.I | re.S)
 
-    marker = lower.find("id=answer")
-    if marker == -1:
-        return html
 
-    start = html.rfind("<hr", 0, marker)
-    end = html.find(">", marker)
-    if start == -1 or end == -1:
-        return html
-    return styles + html[end + 1 :]
+def _show_without_activating(window):
+    try:
+        window.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating, True)
+    except AttributeError:
+        window.setAttribute(Qt.WA_ShowWithoutActivating, True)
+    try:
+        window.setWindowFlag(Qt.WindowType.WindowDoesNotAcceptFocus, True)
+    except AttributeError:
+        window.setWindowFlag(Qt.WindowDoesNotAcceptFocus, True)
 
 
 def _capture(card):
@@ -117,6 +135,7 @@ def _capture(card):
             "card_id": int(card.id),
             "note_id": int(card.nid),
             "template_ord": int(card.ord),
+            "template": _card_template_name(card),
             "size": {"width": int(pixmap.width()), "height": int(pixmap.height())},
         }
     )
@@ -131,7 +150,8 @@ def _show_card():
         width = int(os.environ.get(WIDTH_ENV, "1040"))
         height = int(os.environ.get(HEIGHT_ENV, "780"))
         content = _answer_content(card) if side == "answer" else card.question()
-        PREVIEW_WINDOW = QWidget(mw)
+        PREVIEW_WINDOW = QWidget()
+        _show_without_activating(PREVIEW_WINDOW)
         PREVIEW_WINDOW.setWindowTitle("README card preview")
         PREVIEW_WINDOW.resize(width, height)
         layout = QVBoxLayout(PREVIEW_WINDOW)
@@ -218,6 +238,10 @@ def parse_args() -> argparse.Namespace:
         choices=("question", "answer", "front", "back"),
         default="question",
     )
+    parser.add_argument(
+        "--template",
+        help="exact card-template name to capture",
+    )
     return parser.parse_args()
 
 
@@ -248,6 +272,8 @@ def main() -> int:
             HEIGHT_ENV: str(args.height),
             SIDE_ENV: "answer" if args.side in {"answer", "back"} else "question",
         }
+        if args.template:
+            env[TEMPLATE_ENV] = args.template
         completed = subprocess.run(command, check=False, text=True, env=env)
     return completed.returncode
 
