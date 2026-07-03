@@ -1,0 +1,10 @@
+[tool.anki-addon-release]
+target = "deck"
+
+[tool.anki-addon-release.ankiweb]
+listing_file = "release/mexico.md"
+login_email_env = "ANKIWEB_EMAIL"
+login_password_env = "ANKIWEB_PASSWORD"
+
+[tool.anki-addon-release.deck]
+source_deck_id_env = "ANKIWEB_SOURCE_DECK_ID_MEXICO_FEDERATIVE_ENTITIES"

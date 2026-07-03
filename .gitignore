@@ -1,4 +1,7 @@
 .venv/
+.env
+.anki-addon-release/
+.anki-addon-release.local.toml
 __pycache__/
 out/
 .DS_Store
